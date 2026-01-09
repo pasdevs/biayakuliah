@@ -126,7 +126,7 @@ export default function HalamanDetailBiaya() {
     : "Bayar di Awal Semester";
 
   const descCicilan1 = isSemester1
-    ? "Nominal minimum yang dibayar saat daftar ulang / registrasi awal."
+    ? "Nominal minimum yang dibayar saat daftar ulang (registrasi awal)."
     : "Nominal yang dibayar di awal untuk memulai semester berjalan.";
 
   const descRingkasCicilan1 = isSemester1
@@ -247,7 +247,7 @@ export default function HalamanDetailBiaya() {
               // label="Bayar Saat Daftar Ulang (Cicilan 1)"
               label={`${labelCicilan1} (Cicilan 1)`}
               value={formatIDR(s?.cicilan1 || 0)}
-              note="Nominal minimum yang dibayar di awal semester (registrasi/daftar ulang)."
+              note={descCicilan1}
             />
             <StatCard
               tone="amber"
