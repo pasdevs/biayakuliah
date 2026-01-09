@@ -146,6 +146,15 @@ export default function HalamanDetailBiaya() {
     return uniq.length ? uniq : [1, 2, 3, 4, 5, 6, 7, 8];
   }, [selected]);
 
+  const groupedProdi = useMemo(() => {
+    const map = {};
+    prodiData.forEach((p) => {
+      if (!map[p.fakultas]) map[p.fakultas] = [];
+      map[p.fakultas].push(p);
+    });
+    return map;
+  }, [prodiData]);
+
   return (
     // <div className="min-h-screen bg-neutral-50 text-neutral-900">
     //   <div className="mx-auto max-w-6xl px-6 py-10">
@@ -191,15 +200,33 @@ export default function HalamanDetailBiaya() {
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
               <div className="text-xs font-semibold text-neutral-600">Pilih Program Studi</div>
-              <select
+              {/* <select
                 value={selectedKey}
                 onChange={(e) => setSelectedKey(e.target.value)}
                 className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-neutral-200"
               >
                 {prodiData.map((p) => (
                   <option key={`${p.fakultas}|${p.prodi}`} value={`${p.fakultas}|${p.prodi}`}>
-                    {p.fakultas} — {p.prodi}
+                    S1 - {p.prodi}
                   </option>
+                ))}
+              </select> */}
+              <select
+                value={selectedKey}
+                onChange={(e) => setSelectedKey(e.target.value)}
+                className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-neutral-200"
+              >
+                {Object.entries(groupedProdi).map(([fakultas, listProdi]) => (
+                  <optgroup key={fakultas} label={fakultas}>
+                    {listProdi.map((p) => (
+                      <option
+                        key={`${p.fakultas}|${p.prodi}`}
+                        value={`${p.fakultas}|${p.prodi}`}
+                      >
+                        S1 - {p.prodi}
+                      </option>
+                    ))}
+                  </optgroup>
                 ))}
               </select>
               {/* <div className="mt-2 text-xs text-neutral-500">Data contoh. Untuk produksi: ambil dari JSON hasil sheet.</div> */}
