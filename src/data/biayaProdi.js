@@ -248,7 +248,7 @@ export const rawDataBiayaProdi = [
         ],
         rincianC2: [
           { komponen: "DP (Pengembangan Institusi)", nominal: 875000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 4000000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 3500000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 651000 },
         ],
       })),
@@ -616,7 +616,7 @@ export const rawDataBiayaProdi = [
       })),
     ],
   },
-  
+
   // Fakultas Ekonomi dan Bisnis
   {
     fakultas: "Fakultas Ekonomi dan Bisnis",
@@ -1719,4 +1719,200 @@ export const rawDataBiayaProdi = [
     ],
   },
 
+  {
+    fakultas: "Fakultas Kedokteran",
+    prodi: "Kedokteran",
+    isKedokteran: true,
+
+    gelombang: {
+      1: {
+        label: "Gelombang 1",
+        semesters: [
+          {
+            semester: 1,
+            cicilan1: 165_150_000,
+            cicilan2: 103_800_000,
+            rincianC1: [
+              { komponen: "DPU Universitas (50%)", nominal: 60_000_000 },
+              { komponen: "DPF Fakultas(50%)", nominal: 40_000_000 },
+              { komponen: "Infak Wajib (50%)", nominal: 50_000_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "PKKMB", nominal: 1_350_000 },
+            ],
+            rincianC2: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (40%)", nominal: 40_000_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+          },
+          {
+            semester: 2,
+            cicilan1: 87_600_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (10%)", nominal: 10_000_000 },
+              { komponen: "DPP (Semester 2)", nominal: 27_600_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+            rincianC2: [],
+          },
+          ...[3, 4, 5, 6, 7, 8].map((k) => ({
+            semester: k,
+            cicilan1: 27_600_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPP", nominal: 27_600_000 }
+            ],
+            rincianC2: [],
+          })),
+        ],
+      },
+
+      2: {
+        label: "Gelombang 2",
+        semesters: [
+          {
+            semester: 1,
+            cicilan1: 177_650_000,
+            cicilan2: 113_800_000,
+            rincianC1: [
+              { komponen: "DPU Universitas (50%)", nominal: 60_000_000 },
+              { komponen: "DPF Fakultas(50%)", nominal: 40_000_000 },
+              { komponen: "Infak Wajib (50%)", nominal: 62_500_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "PKKMB", nominal: 1_350_000 },
+            ],
+            rincianC2: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (40%)", nominal: 50_000_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+          },
+          {
+            semester: 2,
+            cicilan1: 90_100_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (10%)", nominal: 12_500_000 },
+              { komponen: "DPP (Semester 2)", nominal: 27_600_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+            rincianC2: [],
+          },
+          ...[3, 4, 5, 6, 7, 8].map((k) => ({
+            semester: k,
+            cicilan1: 27_600_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPP", nominal: 27_600_000 }
+            ],
+            rincianC2: [],
+          })),
+        ],
+      },
+
+      3: {
+        label: "Gelombang 3",
+        semesters: [
+          {
+            semester: 1,
+            cicilan1: 190_150_000,
+            cicilan2: 123_800_000,
+            rincianC1: [
+              { komponen: "DPU Universitas (50%)", nominal: 60_000_000 },
+              { komponen: "DPF Fakultas(50%)", nominal: 40_000_000 },
+              { komponen: "Infak Wajib (50%)", nominal: 75_000_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "PKKMB", nominal: 1_350_000 },
+            ],
+            rincianC2: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (40%)", nominal: 60_000_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+          },
+          {
+            semester: 2,
+            cicilan1: 92_600_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (10%)", nominal: 15_000_000 },
+              { komponen: "DPP (Semester 2)", nominal: 27_600_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+            rincianC2: [],
+          },
+          ...[3, 4, 5, 6, 7, 8].map((k) => ({
+            semester: k,
+            cicilan1: 27_600_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPP", nominal: 27_600_000 }
+            ],
+            rincianC2: [],
+          })),
+        ],
+      },
+
+      4: {
+        label: "Gelombang 4",
+        semesters: [
+          {
+            semester: 1,
+            cicilan1: 201_300_000,
+            cicilan2: 133_800_000,
+            rincianC1: [
+              { komponen: "DPU Universitas (50%)", nominal: 60_000_000 },
+              { komponen: "DPF Fakultas(50%)", nominal: 40_000_000 },
+              { komponen: "Infak Wajib (50%)", nominal: 87_500_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "PKKMB", nominal: 1_350_000 },
+            ],
+            rincianC2: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (40%)", nominal: 70_000_000 },
+              { komponen: "DPP (50%)", nominal: 13_800_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+          },
+          {
+            semester: 2,
+            cicilan1: 95_100_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPU Universitas (25%)", nominal: 30_000_000 },
+              { komponen: "DPF Fakultas(25%)", nominal: 20_000_000 },
+              { komponen: "Infak Wajib (10%)", nominal: 17_500_000 },
+              { komponen: "DPP (Semester 2)", nominal: 27_600_000 },
+              { komponen: "Infak Kelipatan (50%)", nominal: "" },
+            ],
+            rincianC2: [],
+          },
+          ...[3, 4, 5, 6, 7, 8].map((k) => ({
+            semester: k,
+            cicilan1: 27_600_000,
+            cicilan2: "",
+            rincianC1: [
+              { komponen: "DPP", nominal: 27_600_000 }
+            ],
+            rincianC2: [],
+          })),
+        ],
+      },
+
+    },
+  },
 ];

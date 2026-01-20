@@ -6,8 +6,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/biaya/rincian-lengkap" exact element={<BiayaKuliah />} />
-        <Route path="*" element={<Navigate replace to="/biaya/rincian-lengkap" />} />
+        <Route path="/biayakuliah" exact element={<BiayaKuliah />} />
+        <Route path="*" element={<Navigate replace to="/biayakuliah" />} />
       </Routes>
     </BrowserRouter>
   );

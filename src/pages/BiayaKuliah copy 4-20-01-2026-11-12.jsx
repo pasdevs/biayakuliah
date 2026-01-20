@@ -686,22 +686,7 @@ export default function HalamanDetailBiaya() {
                         )}
                       </div>
 
-                      {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
-
-                      {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="amber">
-                          <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge tone="green">
-                          <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan1 || 0)}
-                          </span>
-                        </Badge>
-                      )}
-
+                      <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge>
                     </div>
 
                     {showRincian ? (
@@ -717,9 +702,10 @@ export default function HalamanDetailBiaya() {
                             {(s?.rincianC1 || []).map((x) => (
                               <tr key={x.komponen} className="border-t border-neutral-200">
                                 <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td>
+                                {/* <td className="px-4 py-3 text-sm text-right font-semibold">{formatIDR(x.nominal)}</td> */}
                                 <td className="px-4 py-3 text-sm text-right font-semibold">
                                   {x.komponen === "Infak Kelipatan (50%)"
-                                    ? "(Kelipatan Rp 25.000.000)"
+                                    ? "Kelipatan Rp 25.000.000"
                                     : formatIDR(x.nominal)}
                                 </td>
                               </tr>
@@ -752,23 +738,7 @@ export default function HalamanDetailBiaya() {
                             <div className="mt-1 text-base font-extrabold">Pelunasan Semester</div>
                           )}
                         </div>
-
-                        {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
-
-                        {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="amber">
-                          <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge tone="green">
-                          <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan2 || 0)}
-                          </span>
-                        </Badge>
-                      )}
-
+                        <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge>
                       </div>
 
                       {showRincian ? (
@@ -786,10 +756,10 @@ export default function HalamanDetailBiaya() {
                                   <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td>
                                   {/* <td className="px-4 py-3 text-sm text-right font-semibold">{formatIDR(x.nominal)}</td> */}
                                   <td className="px-4 py-3 text-sm text-right font-semibold">
-                                    {x.komponen === "Infak Kelipatan (50%)"
-                                      ? "(Kelipatan Rp 25.000.000)"
-                                      : formatIDR(x.nominal)}
-                                  </td>
+                                  {x.komponen === "Infak Kelipatan (50%)"
+                                    ? "Kelipatan Rp 25.000.000"
+                                    : formatIDR(x.nominal)}
+                                </td>
                                 </tr>
                               ))}
                               <tr className="border-t border-neutral-200 bg-neutral-50">

@@ -146,13 +146,7 @@ export default function HalamanDetailBiaya() {
   //tambahan
   const isSemester1 = (s?.semester || semester) === 1;
 
-  const currentSemester = s?.semester || semester;
-
-  // Kedok semester 2 dan ke atas = single card
-  const isKedokSingleStage = isKedokteran && (s?.semester || semester) >= 2;
-  // Khusus pembeda judul
-  const isKedokSemester2 = isKedokteran && currentSemester === 2;
-  const isKedokSemester3Up = isKedokteran && currentSemester >= 3
+  const isKedokSingleStage = isKedokteran && (s?.semester || semester) >= 3;
 
   // const labelCicilan1 = isSemester1
   //   ? "Bayar Saat Daftar Ulang"
@@ -179,33 +173,11 @@ export default function HalamanDetailBiaya() {
     (s?.rincianC1?.length ? totalC1ByBreakdown !== (s?.cicilan1 || 0) : false) ||
     (s?.rincianC2?.length ? totalC2ByBreakdown !== (s?.cicilan2 || 0) : false);
 
-  // 8 semester
-  // const semesterOptions = useMemo(() => {
-  //   const nums = (sourceSemesters || []).map((x) => x.semester).filter(Boolean);
-  //   const uniq = Array.from(new Set(nums)).sort((a, b) => a - b);
-  //   return uniq.length ? uniq : [1, 2, 3, 4, 5, 6, 7, 8];
-  // }, [selected]);
-
   const semesterOptions = useMemo(() => {
     const nums = (sourceSemesters || []).map((x) => x.semester).filter(Boolean);
-    let uniq = Array.from(new Set(nums)).sort((a, b) => a - b);
-
-    // Jika data kosong, fallback:
-    if (!uniq.length) {
-      if (isKedokteran) {
-        uniq = [1, 2, 3, 4, 5, 6, 7];
-      } else {
-        uniq = [1, 2, 3, 4, 5, 6, 7, 8];
-      }
-    }
-
-    // 🔒 Safety clamp: Kedok maksimal semester 7
-    if (isKedokteran) {
-      uniq = uniq.filter((n) => n >= 1 && n <= 7);
-    }
-
-    return uniq;
-  }, [sourceSemesters, isKedokteran]);
+    const uniq = Array.from(new Set(nums)).sort((a, b) => a - b);
+    return uniq.length ? uniq : [1, 2, 3, 4, 5, 6, 7, 8];
+  }, [selected]);
 
   const groupedProdi = useMemo(() => {
     const map = {};
@@ -351,7 +323,14 @@ export default function HalamanDetailBiaya() {
                       return (
                         <div key={fakultas}>
                           {/* Fakultas Header */}
-                          <div className="px-4 py-2 text-sm font-semibold text-neutral-700 bg-white">
+                          <div
+                            className={
+                              "sticky top-0 px-4 py-2 text-sm font-semibold border-b " +
+                              (isActiveFaculty
+                                ? "bg-emerald-100 text-emerald-900"
+                                : "bg-neutral-50 text-neutral-800")
+                            }
+                          >
                             {fakultas}
                           </div>
 
@@ -371,10 +350,10 @@ export default function HalamanDetailBiaya() {
                                   setOpenProdi(false);
                                 }}
                                 className={
-                                  "w-full text-left px-8 py-2 text-sm transition-colors " +
+                                  "w-full text-left px-8 py-2 text-sm text-neutral-800 hover:bg-emerald-50 " +
                                   (active
-                                    ? "bg-blue-700 text-white font-semibold"
-                                    : "text-neutral-800 hover:bg-blue-700 hover:text-white")
+                                    ? "bg-emerald-100 font-semibold text-emerald-900"
+                                    : "")
                                 }
                               >
                                 S1 — {p.prodi}
@@ -398,7 +377,7 @@ export default function HalamanDetailBiaya() {
                   value={gelombang}
                   onChange={(e) => {
                     setGelombang(Number(e.target.value));
-                    // setSemester(1);
+                    setSemester(1);
                   }}
                   className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
@@ -665,17 +644,10 @@ export default function HalamanDetailBiaya() {
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <div className="text-xs font-semibold text-neutral-600">
-                          {/* {isKedokteran
+                          {isKedokteran
                             ? isKedokSingleStage
                               ? "Biaya Semester"
                               : "Tahap 1"
-                            : "Cicilan 1"} */}
-                          {isKedokteran
-                            ? isKedokSemester3Up
-                              ? "Biaya Semester"
-                              : isKedokSemester2
-                                ? "Tahap 3"
-                                : "Tahap 1"
                             : "Cicilan 1"}
                         </div>
 
@@ -686,22 +658,7 @@ export default function HalamanDetailBiaya() {
                         )}
                       </div>
 
-                      {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
-
-                      {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="amber">
-                          <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge tone="green">
-                          <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan1 || 0)}
-                          </span>
-                        </Badge>
-                      )}
-
+                      <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge>
                     </div>
 
                     {showRincian ? (
@@ -717,11 +674,7 @@ export default function HalamanDetailBiaya() {
                             {(s?.rincianC1 || []).map((x) => (
                               <tr key={x.komponen} className="border-t border-neutral-200">
                                 <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td>
-                                <td className="px-4 py-3 text-sm text-right font-semibold">
-                                  {x.komponen === "Infak Kelipatan (50%)"
-                                    ? "(Kelipatan Rp 25.000.000)"
-                                    : formatIDR(x.nominal)}
-                                </td>
+                                <td className="px-4 py-3 text-sm text-right font-semibold">{formatIDR(x.nominal)}</td>
                               </tr>
                             ))}
                             <tr className="border-t border-neutral-200 bg-neutral-50">
@@ -752,23 +705,7 @@ export default function HalamanDetailBiaya() {
                             <div className="mt-1 text-base font-extrabold">Pelunasan Semester</div>
                           )}
                         </div>
-
-                        {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
-
-                        {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="amber">
-                          <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge tone="green">
-                          <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan2 || 0)}
-                          </span>
-                        </Badge>
-                      )}
-
+                        <Badge tone="amber">{formatIDR(s?.cicilan2 || 0)}</Badge>
                       </div>
 
                       {showRincian ? (
@@ -784,12 +721,7 @@ export default function HalamanDetailBiaya() {
                               {(s?.rincianC2 || []).map((x) => (
                                 <tr key={x.komponen} className="border-t border-neutral-200">
                                   <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td>
-                                  {/* <td className="px-4 py-3 text-sm text-right font-semibold">{formatIDR(x.nominal)}</td> */}
-                                  <td className="px-4 py-3 text-sm text-right font-semibold">
-                                    {x.komponen === "Infak Kelipatan (50%)"
-                                      ? "(Kelipatan Rp 25.000.000)"
-                                      : formatIDR(x.nominal)}
-                                  </td>
+                                  <td className="px-4 py-3 text-sm text-right font-semibold">{formatIDR(x.nominal)}</td>
                                 </tr>
                               ))}
                               <tr className="border-t border-neutral-200 bg-neutral-50">
