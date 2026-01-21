@@ -47,29 +47,6 @@ function sumBreakdown(items) {
   return (items || []).reduce((acc, x) => acc + (Number(x?.nominal) || 0), 0);
 }
 
-// function normalizeProdiData(raw) {
-//   if (!Array.isArray(raw)) return [];
-//   return raw
-//     .map((p) => {
-//       const semesters = Array.isArray(p.semesters) ? p.semesters : [];
-//       const sorted = [...semesters].sort((a, b) => (a?.semester || 0) - (b?.semester || 0));
-//       return {
-//         fakultas: String(p.fakultas || ""),
-//         prodi: String(p.prodi || ""),
-//         catatan: String(p.catatan || ""),
-//         isKedokteran: Boolean(p.isKedokteran),
-//         semesters: sorted.map((s) => ({
-//           semester: Number(s.semester || 0),
-//           cicilan1: Number(s.cicilan1 || 0),
-//           cicilan2: Number(s.cicilan2 || 0),
-//           rincianC1: Array.isArray(s.rincianC1) ? s.rincianC1 : [],
-//           rincianC2: Array.isArray(s.rincianC2) ? s.rincianC2 : [],
-//         })),
-//       };
-//     })
-//     .filter((p) => p.fakultas && p.prodi);
-// }
-
 function normalizeProdiData(raw) {
   if (!Array.isArray(raw)) return [];
   return raw
@@ -131,11 +108,6 @@ export default function HalamanDetailBiaya() {
     ? selected?.gelombang?.[gelombang]?.semesters
     : selected?.semesters;
 
-  // const s = useMemo(() => {
-  //   const found = selected?.semesters?.find((x) => x.semester === semester);
-  //   return found || selected?.semesters?.[0];
-  // }, [selected, semester]);
-
   const s = useMemo(() => {
     const found = sourceSemesters?.find((x) => x.semester === semester);
     return found || sourceSemesters?.[0];
@@ -147,6 +119,10 @@ export default function HalamanDetailBiaya() {
   const isSemester1 = (s?.semester || semester) === 1;
 
   const currentSemester = s?.semester || semester;
+
+  const baseCicilan = (currentSemester - 1) * 2;
+  const cicilanKe1 = baseCicilan + 1;
+  const cicilanKe2 = baseCicilan + 2;
 
   // Kedok semester 2 dan ke atas = single card
   const isKedokSingleStage = isKedokteran && (s?.semester || semester) >= 2;
@@ -178,13 +154,6 @@ export default function HalamanDetailBiaya() {
   const breakdownMismatch =
     (s?.rincianC1?.length ? totalC1ByBreakdown !== (s?.cicilan1 || 0) : false) ||
     (s?.rincianC2?.length ? totalC2ByBreakdown !== (s?.cicilan2 || 0) : false);
-
-  // 8 semester
-  // const semesterOptions = useMemo(() => {
-  //   const nums = (sourceSemesters || []).map((x) => x.semester).filter(Boolean);
-  //   const uniq = Array.from(new Set(nums)).sort((a, b) => a - b);
-  //   return uniq.length ? uniq : [1, 2, 3, 4, 5, 6, 7, 8];
-  // }, [selected]);
 
   const semesterOptions = useMemo(() => {
     const nums = (sourceSemesters || []).map((x) => x.semester).filter(Boolean);
@@ -235,7 +204,7 @@ export default function HalamanDetailBiaya() {
           <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-center gap-4">
               <img
-                src="/biaya/rincian-lengkap/logo_unpas.png"
+                src="/biayakuliah/logo_unpas.png"
                 alt="Logo Pasundan"
                 className="h-12 w-auto"
               />
@@ -243,14 +212,6 @@ export default function HalamanDetailBiaya() {
                 Rincian Biaya Pendidikan (S1) Universitas Pasundan
               </h2>
             </div>
-
-            {/* {!isKedokteran && (
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge tone="green">Cicilan 1 = Bayar Awal</Badge>
-                <Badge tone="amber">Cicilan 2 = Pelunasan</Badge>
-                <Badge tone="slate">Total = Cicilan 1 + Cicilan 2</Badge>
-              </div>
-            )} */}
           </header>
 
           {!isKedokteran && (
@@ -273,31 +234,6 @@ export default function HalamanDetailBiaya() {
           )}
 
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-
-            {/* KOLOM 1: PILIH PRODI */}
-            {/* <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
-              <div className="text-xs font-semibold text-neutral-600">Pilih Program Studi</div>
-              <select
-                value={selectedKey}
-                onChange={(e) => {
-                  setSelectedKey(e.target.value);
-                  setSemester(1);
-                  setGelombang(1);
-                }}
-                className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
-              >
-                {Object.entries(groupedProdi).map(([fakultas, listProdi]) => (
-                  <optgroup key={fakultas} label={fakultas}>
-                    {listProdi.map((p) => (
-                      <option key={`${p.fakultas}|${p.prodi}`} value={`${p.fakultas}|${p.prodi}`}>
-                        S1 - {p.prodi}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
-            </div> */}
-
             {/* KOLOM 1: PILIH PRODI (CUSTOM DROPDOWN PRO) */}
             <div
               ref={prodiRef}
@@ -402,7 +338,7 @@ export default function HalamanDetailBiaya() {
                   }}
                   className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
-                  {[1, 2, 3].map((g) => (
+                  {[1, 2, 3, 4].map((g) => (
                     <option key={g} value={g}>Gelombang {g}</option>
                   ))}
                 </select>
@@ -458,44 +394,23 @@ export default function HalamanDetailBiaya() {
 
           </div>
 
-          {/* <section className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <StatCard
-              tone="green"
-              label={`${labelCicilan1} (Cicilan 1)`}
-              value={formatIDR(s?.cicilan1 || 0)}
-              note={descCicilan1}
-            />
-            <StatCard
-              tone="amber"
-              label="Pelunasan Semester (Cicilan 2)"
-              value={formatIDR(s?.cicilan2 || 0)}
-              note="Sisa kewajiban semester berjalan, dibayar sesuai jadwal ketentuan PMB."
-            />
-            <StatCard
-              tone="slate"
-              label="Total Biaya Semester (Cicilan 1 + Cicilan 2)"
-              value={formatIDR(totalSemester)}
-              note="Total kewajiban untuk 1 semester, dibayarkan dalam 2 tahap."
-            />
-          </section> */}
-
           {!isKedokteran ? (
             <section className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatCard
                 tone="green"
-                label={`${labelCicilan1} (Cicilan 1)`}
+                label={`${labelCicilan1} (Cicilan ${cicilanKe1})`}
                 value={formatIDR(s?.cicilan1 || 0)}
                 note={descCicilan1}
               />
               <StatCard
                 tone="amber"
-                label="Pelunasan Semester (Cicilan 2)"
+                label={`Pelunasan Semester (Cicilan ${cicilanKe2})`}
                 value={formatIDR(s?.cicilan2 || 0)}
                 note="Sisa kewajiban semester berjalan, dibayar sesuai jadwal ketentuan PMB."
               />
               <StatCard
                 tone="slate"
-                label="Total Biaya Semester (Cicilan 1 + Cicilan 2)"
+                label={`Total Biaya Semester (Cicilan ${cicilanKe1} + Cicilan ${cicilanKe2})`}
                 value={formatIDR(totalSemester)}
                 note="Total kewajiban untuk 1 semester, dibayarkan dalam 2 tahap."
               />
@@ -512,6 +427,9 @@ export default function HalamanDetailBiaya() {
                           Rincian Dana
                         </th>
                         <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
+                          Jenis Pembayaran
+                        </th>
+                        <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
                           Jumlah
                         </th>
                       </tr>
@@ -519,29 +437,17 @@ export default function HalamanDetailBiaya() {
                     <tbody>
                       <tr>
                         <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
-                          A. DP (Dana Pembangunan)
+                          DP (Dana Pembangunan)
                         </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap"></td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap pl-8">
-                          A.1. DPU Universitas
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
-                          Rp 120.000.000
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap pl-8">
-                          A.2. DPF Fakultas
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
-                          Rp 80.000.000
-                        </td>
+                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">Awal</td>
+                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">Rp 200.000.000</td>
                       </tr>
                       <tr>
                         <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
-                          B. DPP (Dana Penyelenggara Pendidikan) Sarjana
+                          DPP (Dana Penyelenggara Pendidikan) Sarjana
+                        </td>
+                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">
+                          Per Semester
                         </td>
                         <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
                           Rp 27.600.000
@@ -549,7 +455,10 @@ export default function HalamanDetailBiaya() {
                       </tr>
                       <tr>
                         <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
-                          C. DPP (Dana Penyelenggara Pendidikan) Profesi*
+                          DPP (Dana Penyelenggara Pendidikan) Profesi*
+                        </td>
+                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">
+                          Per Semester
                         </td>
                         <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
                           Rp 40.000.000
@@ -576,6 +485,9 @@ export default function HalamanDetailBiaya() {
                         <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
                           Gelombang III
                         </th>
+                        <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
+                          Gelombang IV
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -592,6 +504,9 @@ export default function HalamanDetailBiaya() {
                         <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
                           Rp 150.000.000
                         </td>
+                        <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
+                          Rp 175.000.000
+                        </td>
                       </tr>
                       <tr>
                         <td className="p-3 border border-neutral-300 font-semibold whitespace-nowrap">
@@ -599,7 +514,7 @@ export default function HalamanDetailBiaya() {
                         </td>
                         <td
                           className="p-3 border border-neutral-300 text-center whitespace-nowrap font-semibold"
-                          colSpan={3}
+                          colSpan={4}
                         >
                           Rp 25.000.000
                         </td>
@@ -607,7 +522,7 @@ export default function HalamanDetailBiaya() {
                     </tbody>
                   </table>
                 </div>
-                <div className="font-extrabold mb-4 mt-8">POTONGAN DPP 12,5% UNTUK 10 ORANG PERTAMA YANG MEMBAYAR LUNAS</div>
+                <div className="font-extrabold mb-4 mt-8">POTONGAN DPP 12,5% UNTUK 10 ORANG PERTAMA YANG MEMBAYAR LUNAS (KHUSUS GELOMBANG EARLY BIRD)</div>
                 <div className="font-extrabold mb-4">*) Biaya dapat berubah sewaktu-waktu sesuai kebijakan yang berlaku</div>
 
               </section>
@@ -665,18 +580,20 @@ export default function HalamanDetailBiaya() {
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <div className="text-xs font-semibold text-neutral-600">
-                          {/* {isKedokteran
-                            ? isKedokSingleStage
-                              ? "Biaya Semester"
-                              : "Tahap 1"
-                            : "Cicilan 1"} */}
-                          {isKedokteran
-                            ? isKedokSemester3Up
-                              ? "Biaya Semester"
-                              : isKedokSemester2
-                                ? "Tahap 3"
-                                : "Tahap 1"
-                            : "Cicilan 1"}
+                          {isKedokteran ? (
+                            isKedokSemester3Up ? (
+                              "Biaya Semester"
+                            ) : isKedokSemester2 ? (
+                              <>
+                                Tahap 3 Semester 1 +{" "}
+                                <span className="font-bold text-emerald-600">Semester 2</span>
+                              </>
+                            ) : (
+                              "Tahap 1 - Semester 1"
+                            )
+                          ) : (
+                            `Cicilan ${cicilanKe1}`
+                          )}
                         </div>
 
                         {!isKedokSingleStage && (
@@ -716,8 +633,25 @@ export default function HalamanDetailBiaya() {
                           <tbody>
                             {(s?.rincianC1 || []).map((x) => (
                               <tr key={x.komponen} className="border-t border-neutral-200">
-                                <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td>
-                                <td className="px-4 py-3 text-sm text-right font-semibold">
+                                {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
+                                <td
+                                  className={
+                                    "px-4 py-3 text-sm " +
+                                    (x.komponen === "DPP Semester 2 (100%)"
+                                      ? "text-emerald-600 font-bold"
+                                      : "text-neutral-800")
+                                  }
+                                >
+                                  {x.komponen}
+                                </td>
+                                <td
+                                  className={
+                                    "px-4 py-3 text-sm text-right font-semibold " +
+                                    (x.komponen === "DPP Semester 2 (100%)"
+                                      ? "text-emerald-600"
+                                      : "")
+                                  }
+                                >
                                   {x.komponen === "Infak Kelipatan (50%)"
                                     ? "(Kelipatan Rp 25.000.000)"
                                     : formatIDR(x.nominal)}
@@ -746,7 +680,7 @@ export default function HalamanDetailBiaya() {
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <div className="text-xs font-semibold text-neutral-600">
-                            {isKedokteran ? "Tahap 2" : "Cicilan 2"}
+                            {isKedokteran ? "Tahap 2 - Semester 1" : `Cicilan ${cicilanKe2}`}
                           </div>
                           {!isKedokteran && (
                             <div className="mt-1 text-base font-extrabold">Pelunasan Semester</div>
@@ -756,18 +690,18 @@ export default function HalamanDetailBiaya() {
                         {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
 
                         {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="amber">
-                          <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge tone="green">
-                          <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan2 || 0)}
-                          </span>
-                        </Badge>
-                      )}
+                          <Badge tone="amber">
+                            <span className="text-sm font-bold">
+                              (Total rincian belum mencakup infak kelipatan)
+                            </span>
+                          </Badge>
+                        ) : (
+                          <Badge tone="green">
+                            <span className="text-sm font-bold">
+                              {formatIDR(s?.cicilan2 || 0)}
+                            </span>
+                          </Badge>
+                        )}
 
                       </div>
 
