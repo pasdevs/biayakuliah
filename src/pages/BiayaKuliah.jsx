@@ -204,7 +204,7 @@ export default function HalamanDetailBiaya() {
           <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-center gap-4">
               <img
-                src="/biayakuliah/logo_unpas.png"
+                src="/biaya/rincian-lengkap/logo_unpas.png"
                 alt="Logo Pasundan"
                 className="h-12 w-auto"
               />
