@@ -204,7 +204,7 @@ export default function HalamanDetailBiaya() {
           <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-center gap-4">
               <img
-                src="/biaya/rincian-lengkap/logo_unpas.png"
+                src="/biayakuliah/logo_unpas.png"
                 alt="Logo Pasundan"
                 className="h-12 w-auto"
               />
@@ -639,7 +639,9 @@ export default function HalamanDetailBiaya() {
                                     "px-4 py-3 text-sm " +
                                     (x.komponen === "DPP Semester 2 (100%)"
                                       ? "text-emerald-600 font-bold"
-                                      : "text-neutral-800")
+                                      : x.komponen === "Infak Kelipatan (50%)"
+                                        ? "text-[#973C00] font-bold"
+                                        : "text-neutral-800")
                                   }
                                 >
                                   {x.komponen}
@@ -649,7 +651,9 @@ export default function HalamanDetailBiaya() {
                                     "px-4 py-3 text-sm text-right font-semibold " +
                                     (x.komponen === "DPP Semester 2 (100%)"
                                       ? "text-emerald-600"
-                                      : "")
+                                      : x.komponen === "Infak Kelipatan (50%)"
+                                        ? "text-[#973C00]"
+                                        : "")
                                   }
                                 >
                                   {x.komponen === "Infak Kelipatan (50%)"
@@ -717,9 +721,25 @@ export default function HalamanDetailBiaya() {
                             <tbody>
                               {(s?.rincianC2 || []).map((x) => (
                                 <tr key={x.komponen} className="border-t border-neutral-200">
-                                  <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td>
-                                  {/* <td className="px-4 py-3 text-sm text-right font-semibold">{formatIDR(x.nominal)}</td> */}
-                                  <td className="px-4 py-3 text-sm text-right font-semibold">
+                                  {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
+                                  <td
+                                    className={
+                                      "px-4 py-3 text-sm " +
+                                      (x.komponen === "Infak Kelipatan (50%)"
+                                        ? "text-[#973C00] font-bold"
+                                        : "text-neutral-800")
+                                    }
+                                  >
+                                    {x.komponen}
+                                  </td>
+                                  <td
+                                    className={
+                                      "px-4 py-3 text-sm text-right font-semibold " +
+                                      (x.komponen === "Infak Kelipatan (50%)"
+                                        ? "text-[#973C00]"
+                                        : "")
+                                    }
+                                  >
                                     {x.komponen === "Infak Kelipatan (50%)"
                                       ? "(Kelipatan Rp 25.000.000)"
                                       : formatIDR(x.nominal)}
