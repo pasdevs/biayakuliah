@@ -104,6 +104,12 @@ export default function HalamanDetailBiaya() {
 
   const isKedokteran = !!selected?.isKedokteran;
 
+  useEffect(() => {
+    if (isKedokteran && mode === "ringkas") {
+      setMode("detail");
+    }
+  }, [isKedokteran, mode]);
+
   const sourceSemesters = isKedokteran
     ? selected?.gelombang?.[gelombang]?.semesters
     : selected?.semesters;
@@ -380,11 +386,13 @@ export default function HalamanDetailBiaya() {
                   ))}
                 </select>
               </div>
-            ) : (
+            ) : mode === "detail" ? (
               <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
                 <div className="text-xs font-semibold text-neutral-600">Tampilan</div>
                 <div className="mt-2 flex items-center justify-between gap-3">
-                  <div className="text-sm font-semibold text-neutral-800">Tampilkan rincian komponen</div>
+                  <div className="text-sm font-semibold text-neutral-800">
+                    Tampilkan rincian komponen
+                  </div>
                   <button
                     onClick={() => setShowRincian((v) => !v)}
                     className={
@@ -398,7 +406,7 @@ export default function HalamanDetailBiaya() {
                   </button>
                 </div>
               </div>
-            )}
+            ) : null}
 
           </div>
 
@@ -564,14 +572,22 @@ export default function HalamanDetailBiaya() {
                   <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
                     <div className="text-xs font-semibold text-neutral-600">Yang perlu disiapkan sekarang</div>
                     <div className="mt-2 text-2xl font-extrabold">{formatIDR(s?.cicilan1 || 0)}</div>
-                    <div className="mt-2 text-xs text-neutral-600">
+                    {/* <div className="mt-2 text-xs text-neutral-600">
                       {descRingkasCicilan1}
-                    </div>
+                    </div> */}
+                    {isSemester1 ?
+                      <div className="mt-2 text-xs text-neutral-600">
+                        Bayar Saat Daftar Ulang (Cicilan {cicilanKe1}). Detail pelunasan & rincian komponen tersedia di halaman ini.
+                      </div> :
+                      <div className="mt-2 text-xs text-neutral-600">
+                        Pembayaran awal semester berjalan (Cicilan {cicilanKe1}). Sisa pembayaran ditampilkan sebagai pelunasan.
+                      </div>
+                    }
                   </div>
                   <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
                     <div className="text-xs font-semibold text-neutral-600">Pelunasan nanti</div>
                     <div className="mt-2 text-2xl font-extrabold">{formatIDR(s?.cicilan2 || 0)}</div>
-                    <div className="mt-2 text-xs text-neutral-600">Pelunasan Semester (Cicilan 2) sesuai jadwal ketentuan PMB.</div>
+                    <div className="mt-2 text-xs text-neutral-600">Pelunasan Semester berjalan (Cicilan {cicilanKe2}) sesuai jadwal ketentuan PMB.</div>
                   </div>
                 </div>
               ) : (
