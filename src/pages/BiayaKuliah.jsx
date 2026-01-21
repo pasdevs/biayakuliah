@@ -195,6 +195,14 @@ export default function HalamanDetailBiaya() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const hasInfakKelipatanC1 = (s?.rincianC1 || []).some(
+    (x) => x.komponen === "Infak Kelipatan (50%)"
+  );
+
+  const hasInfakKelipatanC2 = (s?.rincianC2 || []).some(
+    (x) => x.komponen === "Infak Kelipatan (50%)"
+  );
+
   return (
     // <div className="min-h-screen bg-neutral-50 text-neutral-900">
     //   <div className="mx-auto max-w-6xl px-6 py-10">
@@ -204,7 +212,7 @@ export default function HalamanDetailBiaya() {
           <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-center gap-4">
               <img
-                src="/biayakuliah/logo_unpas.png"
+                src="/biaya/rincian-lengkap/logo_unpas.png"
                 alt="Logo Pasundan"
                 className="h-12 w-auto"
               />
@@ -633,37 +641,53 @@ export default function HalamanDetailBiaya() {
                           <tbody>
                             {(s?.rincianC1 || []).map((x) => (
                               <tr key={x.komponen} className="border-t border-neutral-200">
-                                {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
-                                <td
-                                  className={
-                                    "px-4 py-3 text-sm " +
-                                    (x.komponen === "DPP Semester 2 (100%)"
-                                      ? "text-emerald-600 font-bold"
-                                      : x.komponen === "Infak Kelipatan (50%)"
-                                        ? "text-[#973C00] font-bold"
-                                        : "text-neutral-800")
-                                  }
-                                >
-                                  {x.komponen}
+                                <td className="px-4 py-3 text-sm text-neutral-800">
+                                  {x.komponen === "Infak Kelipatan (50%)" ? (
+                                    <Badge tone="amber">
+                                      <span className="text-sm font-bold">
+                                        {x.komponen}
+                                      </span>
+                                    </Badge>
+                                  ) : (
+                                    <span
+                                      className={
+                                        x.komponen === "DPP Semester 2 (100%)"
+                                          ? "text-emerald-600 font-bold"
+                                          : "text-neutral-800"
+                                      }
+                                    >
+                                      {x.komponen}
+                                    </span>
+                                  )}
                                 </td>
-                                <td
-                                  className={
-                                    "px-4 py-3 text-sm text-right font-semibold " +
-                                    (x.komponen === "DPP Semester 2 (100%)"
-                                      ? "text-emerald-600"
-                                      : x.komponen === "Infak Kelipatan (50%)"
-                                        ? "text-[#973C00]"
-                                        : "")
-                                  }
-                                >
-                                  {x.komponen === "Infak Kelipatan (50%)"
-                                    ? "(Kelipatan Rp 25.000.000)"
-                                    : formatIDR(x.nominal)}
+                                <td className="px-4 py-3 text-sm text-right font-semibold">
+                                  {x.komponen === "Infak Kelipatan (50%)" ? (
+                                    <div className="flex justify-end">
+                                      <Badge tone="amber">
+                                        <span className="text-sm font-bold">
+                                          (Kelipatan Rp 25.000.000)
+                                        </span>
+                                      </Badge>
+                                    </div>
+                                  ) : (
+                                    <span
+                                      className={
+                                        x.komponen === "DPP Semester 2 (100%)"
+                                          ? "text-emerald-600"
+                                          : ""
+                                      }
+                                    >
+                                      {formatIDR(x.nominal)}
+                                    </span>
+                                  )}
                                 </td>
                               </tr>
                             ))}
                             <tr className="border-t border-neutral-200 bg-neutral-50">
-                              <td className="px-4 py-3 text-sm font-bold">Total rincian</td>
+                              {/* <td className="px-4 py-3 text-sm font-bold">Total rincian</td> */}
+                              <td className="px-4 py-3 text-sm font-bold">
+                                {hasInfakKelipatanC1 ? "Total rincian minimal" : "Total rincian"}
+                              </td>
                               <td className="px-4 py-3 text-sm text-right font-extrabold">
                                 {formatIDR(totalC1ByBreakdown)}
                               </td>
@@ -722,32 +746,53 @@ export default function HalamanDetailBiaya() {
                               {(s?.rincianC2 || []).map((x) => (
                                 <tr key={x.komponen} className="border-t border-neutral-200">
                                   {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
-                                  <td
-                                    className={
-                                      "px-4 py-3 text-sm " +
-                                      (x.komponen === "Infak Kelipatan (50%)"
-                                        ? "text-[#973C00] font-bold"
-                                        : "text-neutral-800")
-                                    }
-                                  >
-                                    {x.komponen}
+                                  <td className="px-4 py-3 text-sm">
+                                    {x.komponen === "Infak Kelipatan (50%)" ? (
+                                      <Badge tone="amber">
+                                        <span className="text-sm font-bold">
+                                          {x.komponen}
+                                        </span>
+                                      </Badge>
+                                    ) : (
+                                      <span
+                                        className={
+                                          x.komponen === "DPP Semester 2 (100%)"
+                                            ? "text-emerald-600 font-bold"
+                                            : "text-neutral-800"
+                                        }
+                                      >
+                                        {x.komponen}
+                                      </span>
+                                    )}
                                   </td>
-                                  <td
-                                    className={
-                                      "px-4 py-3 text-sm text-right font-semibold " +
-                                      (x.komponen === "Infak Kelipatan (50%)"
-                                        ? "text-[#973C00]"
-                                        : "")
-                                    }
-                                  >
-                                    {x.komponen === "Infak Kelipatan (50%)"
-                                      ? "(Kelipatan Rp 25.000.000)"
-                                      : formatIDR(x.nominal)}
+                                  <td className="px-4 py-3 text-sm text-right font-semibold">
+                                    {x.komponen === "Infak Kelipatan (50%)" ? (
+                                      <div className="flex justify-end">
+                                        <Badge tone="amber">
+                                          <span className="text-sm font-bold">
+                                            Kelipatan Rp 25.000.000
+                                          </span>
+                                        </Badge>
+                                      </div>
+                                    ) : (
+                                      <span
+                                        className={
+                                          x.komponen === "DPP Semester 2 (100%)"
+                                            ? "text-emerald-600 font-bold"
+                                            : ""
+                                        }
+                                      >
+                                        {formatIDR(x.nominal)}
+                                      </span>
+                                    )}
                                   </td>
                                 </tr>
                               ))}
                               <tr className="border-t border-neutral-200 bg-neutral-50">
-                                <td className="px-4 py-3 text-sm font-bold">Total rincian</td>
+                                {/* <td className="px-4 py-3 text-sm font-bold">Total rincian</td> */}
+                                <td className="px-4 py-3 text-sm font-bold">
+                                  {hasInfakKelipatanC2 ? "Total rincian minimal" : "Total rincian"}
+                                </td>
                                 <td className="px-4 py-3 text-sm text-right font-extrabold">
                                   {formatIDR(totalC2ByBreakdown)}
                                 </td>
