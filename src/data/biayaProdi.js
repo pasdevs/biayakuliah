@@ -823,108 +823,62 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 3350000,
-        cicilan2: 3031250,
+        cicilan1: 3824500,
+        cicilan2: 2469000,
+        cicilan3: 2469500,
         rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2000000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 13500 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 12000 },
+        ],
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 12500 },
         ],
       },
-      {
-        semester: 2,
-        cicilan1: 3531250,
-        cicilan2: 3187500,
+      ...[2, 3, 4].map((k) => ({
+        semester: k,
+        cicilan1: 2474500,
+        cicilan2: 2469000,
+        cicilan3: 2469500,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 13500 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 12000 },
         ],
-      },
-      {
-        semester: 3,
-        cicilan1: 3237500,
-        cicilan2: 3187500,
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 12500 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 1793000,
+        cicilan2: 1791000,
+        cicilan3: 1791000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-      },
-      {
-        semester: 4,
-        cicilan1: 3237500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+        rincianC3: [
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 5,
-        cicilan1: 3687500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 6,
-        cicilan1: 3737500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 7,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 8,
-        cicilan1: 2687500,
-        cicilan2: 2687500,
-        rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
+      })),
     ],
   },
 
@@ -935,110 +889,62 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 3470000,
-        cicilan2: 3231250,
+        cicilan1: 3881750,
+        cicilan2: 2526000,
+        cicilan3: 2526000,
         rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2000000 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 120000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 70750 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3231250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 69000 },
+        ],
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 69000 },
         ],
       },
-      {
-        semester: 2,
-        cicilan1: 3451250,
-        cicilan2: 3187500,
+      ...[2, 3, 4].map((k) => ({
+        semester: k,
+        cicilan1: 2531750,
+        cicilan2: 2526000,
+        cicilan3: 2526000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2831250 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 120000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 70750 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 69000 },
         ],
-      },
-      {
-        semester: 3,
-        cicilan1: 3307500,
-        cicilan2: 3187500,
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 69000 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 1793000,
+        cicilan2: 1791000,
+        cicilan3: 1791000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 120000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-      },
-      {
-        semester: 4,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+        rincianC3: [
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 5,
-        cicilan1: 3812500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 125000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 6,
-        cicilan1: 3687500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 7,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 8,
-        cicilan1: 3037500,
-        cicilan2: 2687500,
-        rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 350000 },
-        ],
-        rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
+      })),
     ],
   },
 
@@ -1049,111 +955,62 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 3450000,
-        cicilan2: 3031250,
+        cicilan1: 3861000,
+        cicilan2: 2507000,
+        cicilan3: 2507000,
         rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2000000 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+        ],
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
         ],
       },
-      {
-        semester: 2,
-        cicilan1: 3631250,
-        cicilan2: 3187500,
+      ...[2, 3, 4].map((k) => ({
+        semester: k,
+        cicilan1: 2511000,
+        cicilan2: 2507000,
+        cicilan3: 2507000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
         ],
-      },
-      {
-        semester: 3,
-        cicilan1: 3287500,
-        cicilan2: 3187500,
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 1793000,
+        cicilan2: 1791000,
+        cicilan3: 1791000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-      },
-      {
-        semester: 4,
-        cicilan1: 3287500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
+        rincianC3: [
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 5,
-        cicilan1: 3787500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 6,
-        cicilan1: 3787500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 7,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 8,
-        cicilan1: 2687500,
-        cicilan2: 2687500,
-        rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
+      })),
     ],
   },
 
@@ -1164,112 +1021,62 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 3750000,
-        cicilan2: 3431250,
+        cicilan1: 3983500,
+        cicilan2: 2627000,
+        cicilan3: 2627000,
         rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2100000 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 300000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 172500 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3431250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 170000 },
+        ],
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 170000 },
         ],
       },
-      {
-        semester: 2,
-        cicilan1: 3331250,
-        cicilan2: 3187500,
+      ...[2, 3, 4].map((k) => ({
+        semester: k,
+        cicilan1: 2633500,
+        cicilan2: 2627000,
+        cicilan3: 2627000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2531250 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 300000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 172500 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 170000 },
         ],
-      },
-      {
-        semester: 3,
-        cicilan1: 3487500,
-        cicilan2: 3187500,
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 170000 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 1793000,
+        cicilan2: 1791000,
+        cicilan3: 1791000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 300000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-      },
-      {
-        semester: 4,
-        cicilan1: 3487500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 300000 },
+        rincianC3: [
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 5,
-        cicilan1: 4037500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 350000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 6,
-        cicilan1: 3987500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 300000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 7,
-        cicilan1: 3312500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 125000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 8,
-        cicilan1: 2687500,
-        cicilan2: 2687500,
-        rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
+      })),
     ],
   },
 
@@ -1280,110 +1087,62 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 3400000,
-        cicilan2: 3031250,
+        cicilan1: 3840500,
+        cicilan2: 2486500,
+        cicilan3: 2486500,
         rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2000000 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 29500 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 29500 },
+        ],
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 29500 },
         ],
       },
-      {
-        semester: 2,
-        cicilan1: 3581250,
-        cicilan2: 3187500,
+      ...[2, 3, 4].map((k) => ({
+        semester: k,
+        cicilan1: 2490500,
+        cicilan2: 2486500,
+        cicilan3: 2486500,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 29500 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 29500 },
         ],
-      },
-      {
-        semester: 3,
-        cicilan1: 3287500,
-        cicilan2: 3187500,
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 29500 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 1793000,
+        cicilan2: 1791000,
+        cicilan3: 1791000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-      },
-      {
-        semester: 4,
-        cicilan1: 3237500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
+        rincianC3: [
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 5,
-        cicilan1: 3687500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 6,
-        cicilan1: 3787500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 100000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 7,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 8,
-        cicilan1: 2687500,
-        cicilan2: 2687500,
-        rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
+      })),
     ],
   },
 
@@ -1394,107 +1153,62 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 3365000,
-        cicilan2: 3031250,
+        cicilan1: 3817250,
+        cicilan2: 2462000,
+        cicilan3: 2462000,
         rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2000000 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 15000 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 6250 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 5000 },
+        ],
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 5000 },
         ],
       },
-      {
-        semester: 2,
-        cicilan1: 3531250,
-        cicilan2: 3187500,
+      ...[2, 3, 4].map((k) => ({
+        semester: k,
+        cicilan1: 2467250,
+        cicilan2: 2462000,
+        cicilan3: 2462000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 3031250 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 668000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 6250 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 5000 },
         ],
-      },
-      {
-        semester: 3,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
+        rincianC3: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 666000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
+          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 5000 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 1793000,
+        cicilan2: 1791000,
+        cicilan3: 1791000,
         rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1793000 },
         ],
         rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-      },
-      {
-        semester: 4,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
+        rincianC3: [
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 1791000 },
         ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 5,
-        cicilan1: 3687500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 6,
-        cicilan1: 3737500,
-        cicilan2: 3687500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-          { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 50000 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 7,
-        cicilan1: 3187500,
-        cicilan2: 3187500,
-        rincianC1: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DP (Pengembangan Institusi)", nominal: 500000 },
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
-      {
-        semester: 8,
-        cicilan1: 2687500,
-        cicilan2: 2687500,
-        rincianC1: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-        rincianC2: [
-          { komponen: "DPP (Biaya Pendidikan)", nominal: 2687500 },
-        ],
-      },
+      })),
     ],
   },
 

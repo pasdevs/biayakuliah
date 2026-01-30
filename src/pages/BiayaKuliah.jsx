@@ -167,7 +167,8 @@ export default function HalamanDetailBiaya() {
 
   const breakdownMismatch =
     (s?.rincianC1?.length ? totalC1ByBreakdown !== (s?.cicilan1 || 0) : false) ||
-    (s?.rincianC2?.length ? totalC2ByBreakdown !== (s?.cicilan2 || 0) : false);
+    (s?.rincianC2?.length ? totalC2ByBreakdown !== (s?.cicilan2 || 0) : false) ||
+    (s?.rincianC3?.length ? totalC3ByBreakdown !== (s?.cicilan3 || 0) : false);
 
   const semesterOptions = useMemo(() => {
     const nums = (sourceSemesters || []).map((x) => x.semester).filter(Boolean);
