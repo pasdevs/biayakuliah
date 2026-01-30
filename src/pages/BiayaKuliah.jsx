@@ -98,10 +98,10 @@ export default function HalamanDetailBiaya() {
   const [semester, setSemester] = useState(1);
   const [gelombang, setGelombang] = useState(1);
   const [showRincian, setShowRincian] = useState(true);
-  const [mode, setMode] = useState("detail"); // (3) mode ringkas vs detail
   const [openProdi, setOpenProdi] = useState(false);
   const [searchProdi, setSearchProdi] = useState("");
   const prodiRef = useRef(null);
+  const mode = "detail";
 
   const selected = useMemo(() => {
     const [fak, pr] = String(selectedKey || "").split("|");
@@ -233,25 +233,6 @@ export default function HalamanDetailBiaya() {
               </h2>
             </div>
           </header>
-
-          {!isKedokteran && (
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="inline-flex rounded-2xl border border-neutral-200 bg-white p-1 shadow-sm">
-                {[{ k: "detail", label: "Mode Detail" }, { k: "ringkas", label: "Mode Ringkas" }].map((x) => (
-                  <button
-                    key={x.k}
-                    onClick={() => setMode(x.k)}
-                    className={
-                      "rounded-xl px-4 py-2 text-sm font-semibold transition " +
-                      (mode === x.k ? "bg-neutral-900 text-white" : "text-neutral-700 hover:bg-neutral-50")
-                    }
-                  >
-                    {x.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
             {/* KOLOM 1: PILIH PRODI (CUSTOM DROPDOWN PRO) */}
@@ -392,7 +373,7 @@ export default function HalamanDetailBiaya() {
                   ))}
                 </select>
               </div>
-            ) : mode === "detail" ? (
+            ) : (
               <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
                 <div className="text-xs font-semibold text-neutral-600">Tampilan</div>
                 <div className="mt-2 flex items-center justify-between gap-3">
@@ -412,7 +393,7 @@ export default function HalamanDetailBiaya() {
                   </button>
                 </div>
               </div>
-            ) : null}
+            )}
 
           </div>
 
@@ -573,69 +554,149 @@ export default function HalamanDetailBiaya() {
             </div>
 
             <div className="p-5 sm:p-6">
-              {mode === "ringkas" ? (
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
-                    <div className="text-xs font-semibold text-neutral-600">Yang perlu disiapkan sekarang</div>
-                    <div className="mt-2 text-2xl font-extrabold">{formatIDR(s?.cicilan1 || 0)}</div>
-                    {/* <div className="mt-2 text-xs text-neutral-600">
-                      {descRingkasCicilan1}
-                    </div> */}
-                    {isSemester1 ?
-                      <div className="mt-2 text-xs text-neutral-600">
-                        Bayar Saat Daftar Ulang (Cicilan {cicilanKe1}). Detail pelunasan & rincian komponen tersedia di halaman ini.
-                      </div> :
-                      <div className="mt-2 text-xs text-neutral-600">
-                        Pembayaran awal semester berjalan (Cicilan {cicilanKe1}). Sisa pembayaran ditampilkan sebagai pelunasan.
-                      </div>
-                    }
-                  </div>
-                  <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-5">
-                    <div className="text-xs font-semibold text-neutral-600">Pelunasan nanti</div>
-                    <div className="mt-2 text-2xl font-extrabold">{formatIDR(s?.cicilan2 || 0)}</div>
-                    <div className="mt-2 text-xs text-neutral-600">Pelunasan Semester berjalan (Cicilan {cicilanKe2}) sesuai jadwal ketentuan PMB.</div>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className={
-                    isKedokSingleStage
-                      ? "grid grid-cols-1 gap-4"
-                      : "grid grid-cols-1 gap-4 sm:grid-cols-2"
-                  }
-                >
+              <div
+                className={
+                  isKedokSingleStage
+                    ? "grid grid-cols-1 gap-4"
+                    : "grid grid-cols-1 gap-4 sm:grid-cols-2"
+                }
+              >
 
-                  {/* ================= CARD UTAMA ================= */}
+                {/* ================= CARD UTAMA ================= */}
+                <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-semibold text-neutral-600">
+                        {isKedokteran ? (
+                          isKedokSemester3Up ? (
+                            "Biaya Semester"
+                          ) : isKedokSemester2 ? (
+                            <>
+                              Tahap 3 Semester 1 +{" "}
+                              <span className="font-bold text-emerald-600">Semester 2</span>
+                            </>
+                          ) : (
+                            "Tahap 1 - Semester 1"
+                          )
+                        ) : (
+                          `Cicilan ${cicilanKe1}`
+                        )}
+                      </div>
+
+                      {!isKedokSingleStage && (
+                        <div className="mt-1 text-base font-extrabold">
+                          {labelCicilan1}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
+
+                    {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
+                      <Badge tone="amber">
+                        <span className="text-sm font-bold">
+                          (Total rincian belum mencakup infak kelipatan)
+                        </span>
+                      </Badge>
+                    ) : (
+                      <Badge tone="green">
+                        <span className="text-sm font-bold">
+                          {formatIDR(s?.cicilan1 || 0)}
+                        </span>
+                      </Badge>
+                    )}
+
+                  </div>
+
+                  {showRincian ? (
+                    <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+                      <table className="min-w-[420px] w-full">
+                        <thead>
+                          <tr className="text-left text-[11px] uppercase tracking-wider text-neutral-500">
+                            <th className="px-4 py-3">Komponen</th>
+                            <th className="px-4 py-3 text-right">Nominal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(s?.rincianC1 || []).map((x) => (
+                            <tr key={x.komponen} className="border-t border-neutral-200">
+                              <td className="px-4 py-3 text-sm text-neutral-800">
+                                {x.komponen === "Infak Kelipatan (50%)" ? (
+                                  <Badge tone="amber">
+                                    <span className="text-sm font-bold">
+                                      {x.komponen}
+                                    </span>
+                                  </Badge>
+                                ) : (
+                                  <span
+                                    className={
+                                      x.komponen === "DPP Semester 2 (100%)"
+                                        ? "text-emerald-600 font-bold"
+                                        : "text-neutral-800"
+                                    }
+                                  >
+                                    {x.komponen}
+                                  </span>
+                                )}
+                              </td>
+                              <td className="px-4 py-3 text-sm text-right font-semibold">
+                                {x.komponen === "Infak Kelipatan (50%)" ? (
+                                  <div className="flex justify-end">
+                                    <Badge tone="amber">
+                                      <span className="text-sm font-bold">
+                                        (Kelipatan Rp 25.000.000)
+                                      </span>
+                                    </Badge>
+                                  </div>
+                                ) : (
+                                  <span
+                                    className={
+                                      x.komponen === "DPP Semester 2 (100%)"
+                                        ? "text-emerald-600"
+                                        : ""
+                                    }
+                                  >
+                                    {formatIDR(x.nominal)}
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                          <tr className="border-t border-neutral-200 bg-neutral-50">
+                            {/* <td className="px-4 py-3 text-sm font-bold">Total rincian</td> */}
+                            <td className="px-4 py-3 text-sm font-bold">
+                              {hasInfakKelipatanC1 ? "Total rincian minimal" : "Total rincian"}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-right font-extrabold">
+                              {formatIDR(totalC1ByBreakdown)}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="mt-4 text-xs text-neutral-600">
+                      Rincian komponen disembunyikan.
+                    </div>
+                  )}
+                </div>
+
+                {/* ================= CARD TAHAP 2 ================= */}
+                {!isKedokSingleStage && (
                   <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <div className="text-xs font-semibold text-neutral-600">
-                          {isKedokteran ? (
-                            isKedokSemester3Up ? (
-                              "Biaya Semester"
-                            ) : isKedokSemester2 ? (
-                              <>
-                                Tahap 3 Semester 1 +{" "}
-                                <span className="font-bold text-emerald-600">Semester 2</span>
-                              </>
-                            ) : (
-                              "Tahap 1 - Semester 1"
-                            )
-                          ) : (
-                            `Cicilan ${cicilanKe1}`
-                          )}
+                          {isKedokteran ? "Tahap 2 - Semester 1" : `Cicilan ${cicilanKe2}`}
                         </div>
-
-                        {!isKedokSingleStage && (
-                          <div className="mt-1 text-base font-extrabold">
-                            {labelCicilan1}
-                          </div>
+                        {!isKedokteran && (
+                          <div className="mt-1 text-base font-extrabold">Pelunasan Semester</div>
                         )}
                       </div>
 
-                      {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
+                      {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
 
-                      {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
+                      {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
                         <Badge tone="amber">
                           <span className="text-sm font-bold">
                             (Total rincian belum mencakup infak kelipatan)
@@ -644,7 +705,7 @@ export default function HalamanDetailBiaya() {
                       ) : (
                         <Badge tone="green">
                           <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan1 || 0)}
+                            {formatIDR(s?.cicilan2 || 0)}
                           </span>
                         </Badge>
                       )}
@@ -661,9 +722,10 @@ export default function HalamanDetailBiaya() {
                             </tr>
                           </thead>
                           <tbody>
-                            {(s?.rincianC1 || []).map((x) => (
+                            {(s?.rincianC2 || []).map((x) => (
                               <tr key={x.komponen} className="border-t border-neutral-200">
-                                <td className="px-4 py-3 text-sm text-neutral-800">
+                                {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
+                                <td className="px-4 py-3 text-sm">
                                   {x.komponen === "Infak Kelipatan (50%)" ? (
                                     <Badge tone="amber">
                                       <span className="text-sm font-bold">
@@ -687,7 +749,7 @@ export default function HalamanDetailBiaya() {
                                     <div className="flex justify-end">
                                       <Badge tone="amber">
                                         <span className="text-sm font-bold">
-                                          (Kelipatan Rp 25.000.000)
+                                          Kelipatan Rp 25.000.000
                                         </span>
                                       </Badge>
                                     </div>
@@ -695,7 +757,7 @@ export default function HalamanDetailBiaya() {
                                     <span
                                       className={
                                         x.komponen === "DPP Semester 2 (100%)"
-                                          ? "text-emerald-600"
+                                          ? "text-emerald-600 font-bold"
                                           : ""
                                       }
                                     >
@@ -708,10 +770,10 @@ export default function HalamanDetailBiaya() {
                             <tr className="border-t border-neutral-200 bg-neutral-50">
                               {/* <td className="px-4 py-3 text-sm font-bold">Total rincian</td> */}
                               <td className="px-4 py-3 text-sm font-bold">
-                                {hasInfakKelipatanC1 ? "Total rincian minimal" : "Total rincian"}
+                                {hasInfakKelipatanC2 ? "Total rincian minimal" : "Total rincian"}
                               </td>
                               <td className="px-4 py-3 text-sm text-right font-extrabold">
-                                {formatIDR(totalC1ByBreakdown)}
+                                {formatIDR(totalC2ByBreakdown)}
                               </td>
                             </tr>
                           </tbody>
@@ -723,115 +785,9 @@ export default function HalamanDetailBiaya() {
                       </div>
                     )}
                   </div>
+                )}
 
-                  {/* ================= CARD TAHAP 2 ================= */}
-                  {!isKedokSingleStage && (
-                    <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
-                      <div className="flex items-center justify-between gap-3">
-                        <div>
-                          <div className="text-xs font-semibold text-neutral-600">
-                            {isKedokteran ? "Tahap 2 - Semester 1" : `Cicilan ${cicilanKe2}`}
-                          </div>
-                          {!isKedokteran && (
-                            <div className="mt-1 text-base font-extrabold">Pelunasan Semester</div>
-                          )}
-                        </div>
-
-                        {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
-
-                        {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                          <Badge tone="amber">
-                            <span className="text-sm font-bold">
-                              (Total rincian belum mencakup infak kelipatan)
-                            </span>
-                          </Badge>
-                        ) : (
-                          <Badge tone="green">
-                            <span className="text-sm font-bold">
-                              {formatIDR(s?.cicilan2 || 0)}
-                            </span>
-                          </Badge>
-                        )}
-
-                      </div>
-
-                      {showRincian ? (
-                        <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
-                          <table className="min-w-[420px] w-full">
-                            <thead>
-                              <tr className="text-left text-[11px] uppercase tracking-wider text-neutral-500">
-                                <th className="px-4 py-3">Komponen</th>
-                                <th className="px-4 py-3 text-right">Nominal</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {(s?.rincianC2 || []).map((x) => (
-                                <tr key={x.komponen} className="border-t border-neutral-200">
-                                  {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
-                                  <td className="px-4 py-3 text-sm">
-                                    {x.komponen === "Infak Kelipatan (50%)" ? (
-                                      <Badge tone="amber">
-                                        <span className="text-sm font-bold">
-                                          {x.komponen}
-                                        </span>
-                                      </Badge>
-                                    ) : (
-                                      <span
-                                        className={
-                                          x.komponen === "DPP Semester 2 (100%)"
-                                            ? "text-emerald-600 font-bold"
-                                            : "text-neutral-800"
-                                        }
-                                      >
-                                        {x.komponen}
-                                      </span>
-                                    )}
-                                  </td>
-                                  <td className="px-4 py-3 text-sm text-right font-semibold">
-                                    {x.komponen === "Infak Kelipatan (50%)" ? (
-                                      <div className="flex justify-end">
-                                        <Badge tone="amber">
-                                          <span className="text-sm font-bold">
-                                            Kelipatan Rp 25.000.000
-                                          </span>
-                                        </Badge>
-                                      </div>
-                                    ) : (
-                                      <span
-                                        className={
-                                          x.komponen === "DPP Semester 2 (100%)"
-                                            ? "text-emerald-600 font-bold"
-                                            : ""
-                                        }
-                                      >
-                                        {formatIDR(x.nominal)}
-                                      </span>
-                                    )}
-                                  </td>
-                                </tr>
-                              ))}
-                              <tr className="border-t border-neutral-200 bg-neutral-50">
-                                {/* <td className="px-4 py-3 text-sm font-bold">Total rincian</td> */}
-                                <td className="px-4 py-3 text-sm font-bold">
-                                  {hasInfakKelipatanC2 ? "Total rincian minimal" : "Total rincian"}
-                                </td>
-                                <td className="px-4 py-3 text-sm text-right font-extrabold">
-                                  {formatIDR(totalC2ByBreakdown)}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : (
-                        <div className="mt-4 text-xs text-neutral-600">
-                          Rincian komponen disembunyikan.
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                </div>
-              )}
+              </div>
             </div>
           </section>
 

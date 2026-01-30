@@ -3,7 +3,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Hukum",
     prodi: "Ilmu Hukum",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -50,7 +50,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Sosial dan Ilmu Politik",
     prodi: "Ilmu Administrasi Publik",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -96,7 +96,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Sosial dan Ilmu Politik",
     prodi: "Ilmu Kesejahteraan Sosial",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -157,7 +157,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Sosial dan Ilmu Politik",
     prodi: "Ilmu Hubungan Internasional",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -219,7 +219,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Sosial dan Ilmu Politik",
     prodi: "Ilmu Administrasi Bisnis",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -281,7 +281,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Sosial dan Ilmu Politik",
     prodi: "Ilmu Komunikasi",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -344,7 +344,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Teknik",
     prodi: "Teknik Industri",
-    catatan: "Semester 5–8 umumnya lebih ringan karena komponen tertentu sudah selesai dicicil.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -390,7 +390,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Teknik",
     prodi: "Teknologi Pangan",
-    catatan: "Semester 5–8 umumnya lebih ringan karena komponen tertentu sudah selesai dicicil.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -436,7 +436,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Teknik",
     prodi: "Teknik Mesin",
-    catatan: "Semester 5–8 umumnya lebih ringan karena komponen tertentu sudah selesai dicicil.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -482,7 +482,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Teknik",
     prodi: "Teknik Informatika",
-    catatan: "Semester 5–8 umumnya lebih ringan karena komponen tertentu sudah selesai dicicil.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -528,7 +528,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Teknik",
     prodi: "Teknik Lingkungan",
-    catatan: "Semester 5–8 umumnya lebih ringan karena komponen tertentu sudah selesai dicicil.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -574,7 +574,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Teknik",
     prodi: "Perencanaan Wilayah dan Kota",
-    catatan: "Semester 5–8 umumnya lebih ringan karena komponen tertentu sudah selesai dicicil.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -621,7 +621,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ekonomi dan Bisnis",
     prodi: "Manajemen",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -667,7 +667,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ekonomi dan Bisnis",
     prodi: "Akuntansi",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -713,7 +713,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ekonomi dan Bisnis",
     prodi: "Ekonomi Pembangunan",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -759,7 +759,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ekonomi dan Bisnis",
     prodi: "Bisnis Digital",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -819,7 +819,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Keguruan dan Ilmu Pendidikan",
     prodi: "Pendidikan Pancasila dan Kewarganegaraan",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -931,7 +931,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Keguruan dan Ilmu Pendidikan",
     prodi: "Pendidikan Ekonomi",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1045,7 +1045,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Keguruan dan Ilmu Pendidikan",
     prodi: "Pendidikan Bahasa dan Sastra Indonesia",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1160,7 +1160,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Keguruan dan Ilmu Pendidikan",
     prodi: "Pendidikan Biologi",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1276,7 +1276,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Keguruan dan Ilmu Pendidikan",
     prodi: "Pendidikan Matematika",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1390,7 +1390,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Keguruan dan Ilmu Pendidikan",
     prodi: "Pendidikan Guru Sekolah Dasar",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1502,7 +1502,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Seni dan Sastra",
     prodi: "Desain Komunikasi Visual",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1557,7 +1557,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Seni dan Sastra",
     prodi: "Fotografi",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1612,7 +1612,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Seni dan Sastra",
     prodi: "Seni Musik",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
@@ -1667,7 +1667,7 @@ export const rawDataBiayaProdi = [
   {
     fakultas: "Fakultas Ilmu Seni dan Sastra",
     prodi: "Sastra Inggris",
-    catatan: "Pembayaran per semester dapat dilakukan 2 tahap (cicilan) sesuai ketentuan PMB.",
+    catatan: "",
     semesters: [
       {
         semester: 1,
