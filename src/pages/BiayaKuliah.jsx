@@ -81,8 +81,10 @@ function normalizeProdiData(raw) {
           semester: Number(s.semester || 0),
           cicilan1: Number(s.cicilan1 || 0),
           cicilan2: Number(s.cicilan2 || 0),
+          cicilan3: Number(s.cicilan3 || 0),
           rincianC1: Array.isArray(s.rincianC1) ? s.rincianC1 : [],
           rincianC2: Array.isArray(s.rincianC2) ? s.rincianC2 : [],
+          rincianC3: Array.isArray(s.rincianC3) ? s.rincianC3 : [],
         })),
       };
     })
@@ -101,20 +103,17 @@ export default function HalamanDetailBiaya() {
   const [openProdi, setOpenProdi] = useState(false);
   const [searchProdi, setSearchProdi] = useState("");
   const prodiRef = useRef(null);
-  const mode = "detail";
 
   const selected = useMemo(() => {
     const [fak, pr] = String(selectedKey || "").split("|");
     return prodiData.find((p) => p.fakultas === fak && p.prodi === pr) || prodiData[0];
   }, [prodiData, selectedKey]);
 
-  const isKedokteran = !!selected?.isKedokteran;
+  const isFKIP = selected?.fakultas === "Fakultas Keguruan dan Ilmu Pendidikan";
 
-  useEffect(() => {
-    if (isKedokteran && mode === "ringkas") {
-      setMode("detail");
-    }
-  }, [isKedokteran, mode]);
+  const cicilanCount = isFKIP ? 3 : 2;
+
+  const isKedokteran = !!selected?.isKedokteran;
 
   const sourceSemesters = isKedokteran
     ? selected?.gelombang?.[gelombang]?.semesters
@@ -125,16 +124,22 @@ export default function HalamanDetailBiaya() {
     return found || sourceSemesters?.[0];
   }, [sourceSemesters, semester]);
 
-  const totalSemester = (s?.cicilan1 || 0) + (s?.cicilan2 || 0);
+  // const totalSemester = (s?.cicilan1 || 0) + (s?.cicilan2 || 0);
+
+  const totalSemester =
+    (s?.cicilan1 || 0) +
+    (s?.cicilan2 || 0) +
+    (isFKIP ? (s?.cicilan3 || 0) : 0);
 
   //tambahan
   const isSemester1 = (s?.semester || semester) === 1;
 
   const currentSemester = s?.semester || semester;
 
-  const baseCicilan = (currentSemester - 1) * 2;
+  const baseCicilan = (currentSemester - 1) * cicilanCount;
   const cicilanKe1 = baseCicilan + 1;
   const cicilanKe2 = baseCicilan + 2;
+  const cicilanKe3 = baseCicilan + 3;
 
   // Kedok semester 2 dan ke atas = single card
   const isKedokSingleStage = isKedokteran && (s?.semester || semester) >= 2;
@@ -142,15 +147,11 @@ export default function HalamanDetailBiaya() {
   const isKedokSemester2 = isKedokteran && currentSemester === 2;
   const isKedokSemester3Up = isKedokteran && currentSemester >= 3
 
-  // const labelCicilan1 = isSemester1
-  //   ? "Bayar Saat Daftar Ulang"
-  //   : "Bayar di Awal Semester";
-
   const labelCicilan1 = isKedokteran
     ? ""
     : isSemester1
       ? "Bayar Saat Daftar Ulang"
-      : "Bayar di Awal Semester";
+      : `Pembayaran cicilan ${cicilanKe1}`;
 
   const descCicilan1 = isSemester1
     ? "Nominal minimum yang dibayar saat daftar ulang (registrasi awal)."
@@ -162,6 +163,7 @@ export default function HalamanDetailBiaya() {
 
   const totalC1ByBreakdown = sumBreakdown(s?.rincianC1);
   const totalC2ByBreakdown = sumBreakdown(s?.rincianC2);
+  const totalC3ByBreakdown = sumBreakdown(s?.rincianC3);
 
   const breakdownMismatch =
     (s?.rincianC1?.length ? totalC1ByBreakdown !== (s?.cicilan1 || 0) : false) ||
@@ -401,22 +403,32 @@ export default function HalamanDetailBiaya() {
             <section className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <StatCard
                 tone="neutral"
-                label={`${labelCicilan1} (Cicilan ${cicilanKe1})`}
+                label={`${labelCicilan1}`}
                 value={formatIDR(s?.cicilan1 || 0)}
                 note={descCicilan1}
               />
               <StatCard
                 tone="neutral"
-                label={`Pelunasan Semester (Cicilan ${cicilanKe2})`}
+                label={`Pembayaran cicilan ${cicilanKe2}`}
                 value={formatIDR(s?.cicilan2 || 0)}
-                note="Sisa kewajiban semester berjalan, dibayar sesuai jadwal ketentuan PMB."
+                note={`Nominal pembayaran cicilan ${cicilanKe2}.`}
               />
-              <StatCard
-                tone="amber"
-                label={`Total Biaya Semester ${semester}`}
-                value={formatIDR(totalSemester)}
-                note="Total kewajiban untuk 1 semester, bisa dibayarkan dalam 2 tahap."
-              />
+              {isFKIP && (
+                <StatCard
+                  tone="neutral"
+                  label={`Pembayaran cicilan ${cicilanKe3}`}
+                  value={formatIDR(s?.cicilan3 || 0)}
+                  note={`Nominal pembayaran cicilan ${cicilanKe3}.`}
+                />
+              )}
+              <div className={isFKIP ? "sm:col-span-1" : ""}>
+                <StatCard
+                  tone="amber"
+                  label={`Total Biaya Semester ${semester}`}
+                  value={formatIDR(totalSemester)}
+                  note={`Total kewajiban untuk 1 semester (${cicilanCount} tahap pembayaran).`}
+                />
+              </div>
             </section>
           ) :
             (
@@ -547,7 +559,7 @@ export default function HalamanDetailBiaya() {
                   <h2 className="text-lg font-extrabold tracking-tight">
                     {selected?.fakultas} — {selected?.prodi}
                   </h2>
-                  <p className="mt-1 text-sm text-neutral-600">Semester {s?.semester || semester} {!isKedokteran && <> • Rincian Biaya</>}</p>
+                  <p className="mt-1 text-sm text-neutral-600">Semester {s?.semester || semester} {!isKedokteran && <> • Skema pembayaran {cicilanCount} tahap</>}</p>
                 </div>
                 <div className="text-xs text-neutral-500 sm:text-left">{selected?.catatan}</div>
               </div>
@@ -690,7 +702,7 @@ export default function HalamanDetailBiaya() {
                           {isKedokteran ? "Tahap 2 - Semester 1" : `Cicilan ${cicilanKe2}`}
                         </div>
                         {!isKedokteran && (
-                          <div className="mt-1 text-base font-extrabold">Pelunasan Semester</div>
+                          <div className="mt-1 text-base font-extrabold">Pembayaran cicilan {cicilanKe2}</div>
                         )}
                       </div>
 
@@ -782,6 +794,58 @@ export default function HalamanDetailBiaya() {
                     ) : (
                       <div className="mt-4 text-xs text-neutral-600">
                         Rincian komponen disembunyikan.
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {isFKIP && (
+                  <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-neutral-600">
+                          Cicilan {cicilanKe3}
+                        </div>
+                        <div className="mt-1 text-base font-extrabold">
+                          Pembayaran cicilan {cicilanKe3}
+                        </div>
+                      </div>
+
+                      <Badge tone="green">
+                        <span className="text-sm font-bold">
+                          {formatIDR(s?.cicilan3 || 0)}
+                        </span>
+                      </Badge>
+                    </div>
+
+                    {showRincian && (
+                      <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+                        <table className="min-w-[420px] w-full">
+                          <thead>
+                            <tr className="text-left text-[11px] uppercase tracking-wider text-neutral-500">
+                              <th className="px-4 py-3">Komponen</th>
+                              <th className="px-4 py-3 text-right">Nominal</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(s?.rincianC3 || []).map((x) => (
+                              <tr key={x.komponen}>
+                                <td className="px-4 py-3 text-sm">{x.komponen}</td>
+                                <td className="px-4 py-3 text-sm text-right font-semibold">
+                                  {formatIDR(x.nominal)}
+                                </td>
+                              </tr>
+                            ))}
+                            <tr className="border-t border-neutral-200 bg-neutral-50">
+                              <td className="px-4 py-3 text-sm font-bold">
+                                Total rincian
+                              </td>
+                              <td className="px-4 py-3 text-sm text-right font-extrabold">
+                                {formatIDR(totalC3ByBreakdown)}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     )}
                   </div>
