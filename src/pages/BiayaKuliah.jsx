@@ -42,8 +42,8 @@ function StatCard({ label, value, note, tone = "neutral" }) {
   };
   return (
     <div className={`rounded-3xl border border-neutral-200 p-5 shadow-sm ring-1 ${toneRing[tone]} ${toneBg[tone]}`}>
-      <div className="text-md font-semibold text-neutral-600">{label}</div>
-      <div className="mt-2 text-2xl font-extrabold tracking-tight">{value}</div>
+      <div className="text-md font-semibold text-emerald-900">{label}</div>
+      <div className="mt-2 text-2xl font-extrabold tracking-tight text-emerald-900">{value}</div>
       {note ? <div className="mt-2 text-xs text-neutral-500">{note}</div> : null}
     </div>
   );
@@ -115,6 +115,39 @@ function calculateTotalSampaiLulus({
     }, 0);
 }
 
+function buildLunasTable(semesters, cicilanCount) {
+  const rowsMap = {};
+  let grandTotal = 0;
+
+  semesters.forEach((s) => {
+    const rincianList = [
+      ...(s.rincianC1 || []),
+      ...(s.rincianC2 || []),
+      ...(cicilanCount === 3 ? s.rincianC3 || [] : []),
+    ];
+
+    rincianList.forEach((r) => {
+      if (r.komponen === "Infak Kelipatan (50%)") return;
+
+      if (!rowsMap[r.komponen]) {
+        rowsMap[r.komponen] = Array(8 * cicilanCount).fill(0);
+      }
+
+      const baseIndex = (s.semester - 1) * cicilanCount;
+      const slot = rowsMap[r.komponen].findIndex(
+        (v, i) => i >= baseIndex && i < baseIndex + cicilanCount && v === 0
+      );
+
+      if (slot !== -1) {
+        rowsMap[r.komponen][slot] = r.nominal;
+        grandTotal += r.nominal;
+      }
+    });
+  });
+
+  return { rowsMap, grandTotal };
+}
+
 export default function HalamanDetailBiaya() {
   const rawDataContoh = rawDataBiayaProdi;
 
@@ -132,6 +165,9 @@ export default function HalamanDetailBiaya() {
     const [fak, pr] = String(selectedKey || "").split("|");
     return prodiData.find((p) => p.fakultas === fak && p.prodi === pr) || prodiData[0];
   }, [prodiData, selectedKey]);
+
+  const isLunas = semester === "lunas";
+  const effectiveSemester = isLunas ? null : semester;
 
   const isFKIP = selected?.fakultas === "Fakultas Keguruan dan Ilmu Pendidikan";
 
@@ -260,6 +296,23 @@ export default function HalamanDetailBiaya() {
   const hasInfakKelipatanC2 = (s?.rincianC2 || []).some(
     (x) => x.komponen === "Infak Kelipatan (50%)"
   );
+
+  const lunasTable = useMemo(() => {
+    if (!isLunas || isKedokteran) return null;
+
+    return buildLunasTable(
+      selected?.semesters || [],
+      cicilanCount
+    );
+  }, [isLunas, isKedokteran, selected, cicilanCount]);
+
+  const statCardLabel = isLunas
+    ? "Total Biaya Lunas 8 Semester"
+    : `Total Biaya Semester ${semester}`;
+
+  const statCardValue = isLunas
+    ? formatIDR(lunasTable?.grandTotal || totalSampaiLulus || 0)
+    : formatIDR(totalSemester);
 
   return (
     // <div className="min-h-screen bg-neutral-50 text-neutral-900">
@@ -395,12 +448,13 @@ export default function HalamanDetailBiaya() {
                 <div className="text-xs font-semibold text-neutral-600">Pilih Skema Pembayaran</div>
                 <select
                   value={semester}
-                  onChange={(e) => setSemester(Number(e.target.value))}
+                  onChange={(e) => setSemester(e.target.value === "lunas" ? "lunas" : Number(e.target.value))}
                   className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
                   {semesterOptions.map((n) => (
                     <option key={n} value={n}>Semester {n} (cicilan)</option>
                   ))}
+                  <option value="lunas">Lunas (8 Semester)</option>
                 </select>
               </div>
             )}
@@ -421,9 +475,9 @@ export default function HalamanDetailBiaya() {
               </div>
             ) : (
               <StatCard
-                tone="amber"
-                label={`Total Biaya Semester ${semester}`}
-                value={formatIDR(totalSemester)}
+                tone="green"
+                label={statCardLabel}
+                value={statCardValue}
               />
             )}
 
@@ -431,7 +485,11 @@ export default function HalamanDetailBiaya() {
 
           {!isKedokteran ? (
             <section className="mt-6 rounded-3xl px-2">
-              <div className="font-extrabold mb-4">Berikut rincian pembayaran cicilan untuk semester {semester}:</div>
+              <div className="font-extrabold mb-4">
+                {isLunas
+                  ? "Berikut rincian pembayaran lunas 8 semester:"
+                  : `Berikut rincian pembayaran cicilan untuk semester ${semester}:`}
+              </div>
             </section>
           ) :
             (
@@ -555,73 +613,74 @@ export default function HalamanDetailBiaya() {
             </div>
           ) : null}
 
-          <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm">
-            <div className="p-5 sm:p-6 border-b border-neutral-200">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h2 className="text-lg font-extrabold tracking-tight">
-                    {selected?.fakultas} — {selected?.prodi}
-                  </h2>
-                  <p className="mt-1 text-sm text-neutral-600">Semester {s?.semester || semester} {!isKedokteran && <> • Skema pembayaran {cicilanCount} tahap</>}</p>
+          {(!isLunas || isKedokteran) && (
+            <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm">
+              <div className="p-5 sm:p-6 border-b border-neutral-200">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h2 className="text-lg font-extrabold tracking-tight">
+                      {selected?.fakultas} — {selected?.prodi}
+                    </h2>
+                    <p className="mt-1 text-sm text-neutral-600">Semester {s?.semester || semester} {!isKedokteran && <> • Skema pembayaran {cicilanCount} tahap</>}</p>
+                  </div>
+                  <div className="text-xs text-neutral-500 sm:text-left">{selected?.catatan}</div>
                 </div>
-                <div className="text-xs text-neutral-500 sm:text-left">{selected?.catatan}</div>
               </div>
-            </div>
 
-            <div className="p-5 sm:p-6">
-              <div
-                className={
-                  isKedokSingleStage
-                    ? "grid grid-cols-1 gap-4"
-                    : "grid grid-cols-1 gap-4 sm:grid-cols-2"
-                }
-              >
+              <div className="p-5 sm:p-6">
+                <div
+                  className={
+                    isKedokSingleStage
+                      ? "grid grid-cols-1 gap-4"
+                      : "grid grid-cols-1 gap-4 sm:grid-cols-2"
+                  }
+                >
 
-                {/* ================= CARD UTAMA ================= */}
-                <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <div className="text-xs font-semibold text-neutral-600">
-                        {isKedokteran ? (
-                          isKedokSemester3Up ? (
-                            "Biaya Semester"
-                          ) : isKedokSemester2 ? (
-                            <>
-                              Tahap 3 Semester 1 +{" "}
-                              <span className="font-bold text-emerald-600">Semester 2</span>
-                            </>
-                          ) : (
-                            "Tahap 1 - Semester 1"
-                          )
-                        ) : null}
+                  {/* ================= CARD UTAMA ================= */}
+                  <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-semibold text-neutral-600">
+                          {isKedokteran ? (
+                            isKedokSemester3Up ? (
+                              "Biaya Semester"
+                            ) : isKedokSemester2 ? (
+                              <>
+                                Tahap 3 Semester 1 +{" "}
+                                <span className="font-bold text-emerald-600">Semester 2</span>
+                              </>
+                            ) : (
+                              "Tahap 1 - Semester 1"
+                            )
+                          ) : null}
+                        </div>
+
+                        {!isKedokSingleStage && (
+                          <div className="mt-1 text-base font-extrabold">
+                            {labelCicilan1}
+                          </div>
+                        )}
                       </div>
 
-                      {!isKedokSingleStage && (
-                        <div className="mt-1 text-base font-extrabold">
-                          {labelCicilan1}
-                        </div>
+                      {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
+
+                      {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
+                        <Badge tone="amber">
+                          <span className="text-sm font-bold">
+                            (Total rincian belum mencakup infak kelipatan)
+                          </span>
+                        </Badge>
+                      ) : (
+                        <Badge tone="green">
+                          <span className="text-sm font-bold">
+                            {formatIDR(s?.cicilan1 || 0)}
+                          </span>
+                        </Badge>
                       )}
+
                     </div>
 
-                    {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
-
-                    {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                      <Badge tone="amber">
-                        <span className="text-sm font-bold">
-                          (Total rincian belum mencakup infak kelipatan)
-                        </span>
-                      </Badge>
-                    ) : (
-                      <Badge tone="green">
-                        <span className="text-sm font-bold">
-                          {formatIDR(s?.cicilan1 || 0)}
-                        </span>
-                      </Badge>
-                    )}
-
-                  </div>
-
-                  {showRincian ? (
+                    {/* Rincian */}
                     <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
                       <table className="min-w-[420px] w-full">
                         <thead>
@@ -687,45 +746,41 @@ export default function HalamanDetailBiaya() {
                         </tbody>
                       </table>
                     </div>
-                  ) : (
-                    <div className="mt-4 text-xs text-neutral-600">
-                      Rincian komponen disembunyikan.
-                    </div>
-                  )}
-                </div>
 
-                {/* ================= CARD TAHAP 2 ================= */}
-                {!isKedokSingleStage && (
-                  <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-semibold text-neutral-600">
-                          {isKedokteran ? "Tahap 2 - Semester 1" : null}
+                  </div>
+
+                  {/* ================= CARD TAHAP 2 ================= */}
+                  {!isKedokSingleStage && (
+                    <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <div className="text-xs font-semibold text-neutral-600">
+                            {isKedokteran ? "Tahap 2 - Semester 1" : null}
+                          </div>
+                          {!isKedokteran && (
+                            <div className="mt-1 text-base font-extrabold">Pembayaran cicilan {cicilanKe2}</div>
+                          )}
                         </div>
-                        {!isKedokteran && (
-                          <div className="mt-1 text-base font-extrabold">Pembayaran cicilan {cicilanKe2}</div>
+
+                        {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
+
+                        {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
+                          <Badge tone="amber">
+                            <span className="text-sm font-bold">
+                              (Total rincian belum mencakup infak kelipatan)
+                            </span>
+                          </Badge>
+                        ) : (
+                          <Badge tone="green">
+                            <span className="text-sm font-bold">
+                              {formatIDR(s?.cicilan2 || 0)}
+                            </span>
+                          </Badge>
                         )}
+
                       </div>
 
-                      {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
-
-                      {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="amber">
-                          <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
-                          </span>
-                        </Badge>
-                      ) : (
-                        <Badge tone="green">
-                          <span className="text-sm font-bold">
-                            {formatIDR(s?.cicilan2 || 0)}
-                          </span>
-                        </Badge>
-                      )}
-
-                    </div>
-
-                    {showRincian ? (
+                      {/* Rincian */}
                       <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
                         <table className="min-w-[420px] w-full">
                           <thead>
@@ -792,31 +847,27 @@ export default function HalamanDetailBiaya() {
                           </tbody>
                         </table>
                       </div>
-                    ) : (
-                      <div className="mt-4 text-xs text-neutral-600">
-                        Rincian komponen disembunyikan.
-                      </div>
-                    )}
-                  </div>
-                )}
 
-                {isFKIP && (
-                  <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <div className="mt-1 text-base font-extrabold">
-                          Pembayaran cicilan {cicilanKe3}
-                        </div>
-                      </div>
-
-                      <Badge tone="green">
-                        <span className="text-sm font-bold">
-                          {formatIDR(s?.cicilan3 || 0)}
-                        </span>
-                      </Badge>
                     </div>
+                  )}
 
-                    {showRincian && (
+                  {isFKIP && (
+                    <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <div className="mt-1 text-base font-extrabold">
+                            Pembayaran cicilan {cicilanKe3}
+                          </div>
+                        </div>
+
+                        <Badge tone="green">
+                          <span className="text-sm font-bold">
+                            {formatIDR(s?.cicilan3 || 0)}
+                          </span>
+                        </Badge>
+                      </div>
+
+                      {/* Rincian */}
                       <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
                         <table className="min-w-[420px] w-full">
                           <thead>
@@ -845,35 +896,129 @@ export default function HalamanDetailBiaya() {
                           </tbody>
                         </table>
                       </div>
-                    )}
-                  </div>
-                )}
 
+                    </div>
+                  )}
+
+                </div>
               </div>
-            </div>
-          </section>
-
-          {/* {totalSampaiLulus && (
-            <section className="mt-6">
-              <StatCard
-                tone="slate"
-                label={
-                  isKedokteran ? (
-                    <span>
-                      Estimasi Total Biaya Kuliah sampai lulus (7 Semester),{" "}
-                      <span className="font-bold text-red-600">
-                        untuk kedokteran belum termasuk Infak Kelipatan*
-                      </span>
-                    </span>
-                  ) : (
-                    "Estimasi Total Biaya Kuliah sampai lulus (8 Semester)"
-                  )
-                }
-                value={formatIDR(totalSampaiLulus)}
-              note="*) Biaya dapat berubah sesuai kebijakan yang berlaku."
-              />
             </section>
-          )} */}
+          )}
+
+          {isLunas && !isKedokteran && lunasTable && (
+            <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm p-6">
+              <h2 className="font-extrabold mb-4 text-md">
+                {selected?.fakultas} — {selected?.prodi}
+              </h2>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-[900px] w-full border border-neutral-300 border-collapse text-sm">
+                  <thead>
+                    {/* ===== HEADER BARIS 1 ===== */}
+                    <tr className="bg-neutral-100">
+                      <th
+                        rowSpan={2}
+                        className="p-3 border border-neutral-300 text-center font-semibold"
+                      >
+                        Biaya
+                      </th>
+
+                      {Array.from({ length: 8 }).map((_, sIdx) => (
+                        <th
+                          key={sIdx}
+                          colSpan={cicilanCount}
+                          className="p-3 border border-neutral-300 text-center font-semibold"
+                        >
+                          Semester {sIdx + 1}
+                        </th>
+                      ))}
+
+                      <th
+                        rowSpan={2}
+                        className="p-3 border border-neutral-300 text-center font-semibold"
+                      >
+                        Jumlah
+                      </th>
+                    </tr>
+
+                    {/* ===== HEADER BARIS 2 ===== */}
+                    <tr className="bg-neutral-100">
+                      {Array.from({ length: 8 }).map((_, sIdx) => (
+                        <React.Fragment key={sIdx}>
+                          <th className="p-2 border border-neutral-300 text-center">
+                            Cicilan 1
+                          </th>
+                          <th className="p-2 border border-neutral-300 text-center">
+                            Cicilan 2
+                          </th>
+                          {cicilanCount === 3 && (
+                            <th className="p-2 border border-neutral-300 text-center">
+                              Cicilan 3
+                            </th>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {/* ===== ISI PER KOMPONEN ===== */}
+                    {Object.entries(lunasTable.rowsMap).map(([komponen, values]) => {
+                      const rowTotal = values.reduce((a, b) => a + b, 0);
+
+                      return (
+                        <tr key={komponen}>
+                          <td className="p-3 border border-neutral-300 font-semibold">
+                            {komponen}
+                          </td>
+
+                          {values.map((v, i) => (
+                            <td
+                              key={i}
+                              className="p-3 border border-neutral-300 text-right"
+                            >
+                              {v ? formatIDR(v) : "-"}
+                            </td>
+                          ))}
+
+                          <td className="p-3 border border-neutral-300 text-right font-extrabold">
+                            {formatIDR(rowTotal)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    {/* ===== BARIS JUMLAH PER CICILAN ===== */}
+                    <tr className="bg-neutral-50">
+                      <td className="p-3 border border-neutral-300 font-extrabold">
+                        Jumlah
+                      </td>
+
+                      {Array.from({ length: 8 * cicilanCount }).map((_, colIdx) => {
+                        const colTotal = Object.values(lunasTable.rowsMap).reduce(
+                          (sum, row) => sum + (row[colIdx] || 0),
+                          0
+                        );
+
+                        return (
+                          <td
+                            key={colIdx}
+                            className="p-3 border border-neutral-300 text-right font-semibold"
+                          >
+                            {colTotal ? formatIDR(colTotal) : "-"}
+                          </td>
+                        );
+                      })}
+
+                      <td className="p-3 border border-neutral-300 text-right font-extrabold text-emerald-900 bg-emerald-100">
+                        {formatIDR(lunasTable.grandTotal)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
 
         </div>
       </main>
