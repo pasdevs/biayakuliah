@@ -193,7 +193,7 @@ export default function HalamanDetailBiaya() {
   const labelCicilan1 = isKedokteran
     ? ""
     : isSemester1
-      ? "Bayar Saat Daftar Ulang"
+      ? "Pembayaran Cicilan 1"
       : `Pembayaran cicilan ${cicilanKe1}`;
 
   const descCicilan1 = isSemester1
@@ -399,7 +399,7 @@ export default function HalamanDetailBiaya() {
                   className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
                   {semesterOptions.map((n) => (
-                    <option key={n} value={n}>Cicilan Semester {n}</option>
+                    <option key={n} value={n}>Semester {n} (cicilan)</option>
                   ))}
                 </select>
               </div>
@@ -420,59 +420,18 @@ export default function HalamanDetailBiaya() {
                 </select>
               </div>
             ) : (
-              <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
-                <div className="text-xs font-semibold text-neutral-600">Tampilan</div>
-                <div className="mt-2 flex items-center justify-between gap-3">
-                  <div className="text-sm font-semibold text-neutral-800">
-                    Tampilkan rincian komponen
-                  </div>
-                  <button
-                    onClick={() => setShowRincian((v) => !v)}
-                    className={
-                      "rounded-full border px-3 py-2 text-xs font-semibold " +
-                      (showRincian
-                        ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                        : "bg-white border-neutral-200 text-neutral-700")
-                    }
-                  >
-                    {showRincian ? "ON" : "OFF"}
-                  </button>
-                </div>
-              </div>
+              <StatCard
+                tone="amber"
+                label={`Total Biaya Semester ${semester}`}
+                value={formatIDR(totalSemester)}
+              />
             )}
 
           </div>
 
           {!isKedokteran ? (
-            <section className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <StatCard
-                tone="neutral"
-                label={`${labelCicilan1}`}
-                value={formatIDR(s?.cicilan1 || 0)}
-                note={descCicilan1}
-              />
-              <StatCard
-                tone="neutral"
-                label={`Pembayaran cicilan ${cicilanKe2}`}
-                value={formatIDR(s?.cicilan2 || 0)}
-                note={`Nominal pembayaran cicilan ${cicilanKe2}.`}
-              />
-              {isFKIP && (
-                <StatCard
-                  tone="neutral"
-                  label={`Pembayaran cicilan ${cicilanKe3}`}
-                  value={formatIDR(s?.cicilan3 || 0)}
-                  note={`Nominal pembayaran cicilan ${cicilanKe3}.`}
-                />
-              )}
-              <div className={isFKIP ? "sm:col-span-1" : ""}>
-                <StatCard
-                  tone="amber"
-                  label={`Total Biaya Semester ${semester}`}
-                  value={formatIDR(totalSemester)}
-                  note={`Total kewajiban untuk 1 semester (${cicilanCount} tahap pembayaran).`}
-                />
-              </div>
+            <section className="mt-6 rounded-3xl px-2">
+              <div className="font-extrabold mb-4">Berikut rincian pembayaran cicilan untuk semester {semester}:</div>
             </section>
           ) :
             (
@@ -845,9 +804,6 @@ export default function HalamanDetailBiaya() {
                   <div className="rounded-3xl border border-neutral-200 bg-neutral-50 p-4">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <div className="text-xs font-semibold text-neutral-600">
-                          Cicilan {cicilanKe3}
-                        </div>
                         <div className="mt-1 text-base font-extrabold">
                           Pembayaran cicilan {cicilanKe3}
                         </div>
