@@ -21,8 +21,8 @@ export const rawDataBiayaProdi = [
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 2_750_000 },
         ],
       },
-      ...[2, 3, 4].map((k) => ({
-        semester: k,
+      {
+        semester: 2,
         cicilan1: 7_750_000,
         cicilan2: 7_750_000,
         rincianC1: [
@@ -35,13 +35,26 @@ export const rawDataBiayaProdi = [
           { komponen: "DPP (Biaya Pendidikan)", nominal: 4_250_000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 2_750_000 },
         ],
-      })),
-      ...[5, 6, 7, 8].map((k) => ({
+      },
+      ...[3, 4].map((k) => ({
         semester: k,
         cicilan1: 5_000_000,
         cicilan2: 5_000_000,
-        rincianC1: [{ komponen: "DPP (Biaya Pendidikan)", nominal: 5_000_000 }],
-        rincianC2: [{ komponen: "DPP (Biaya Pendidikan)", nominal: 5_000_000 }],
+        rincianC1: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 750_000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 4_250_000 },
+        ],
+        rincianC2: [
+          { komponen: "DP (Pengembangan Institusi)", nominal: 750_000 },
+          { komponen: "DPP (Biaya Pendidikan)", nominal: 4_250_000 },
+        ],
+      })),
+      ...[5, 6, 7, 8].map((k) => ({
+        semester: k,
+        cicilan1: 4_250_000,
+        cicilan2: 4_250_000,
+        rincianC1: [{ komponen: "DPP (Biaya Pendidikan)", nominal: 4_250_000 }],
+        rincianC2: [{ komponen: "DPP (Biaya Pendidikan)", nominal: 4_250_000 }],
       })),
     ],
   },
@@ -641,8 +654,8 @@ export const rawDataBiayaProdi = [
       },
       ...[2, 3, 4].map((k) => ({
         semester: k,
-        cicilan1: 7_750_000,
-        cicilan2: 7_750_000,
+        cicilan1: 6187500,
+        cicilan2: 6187500,
         rincianC1: [
           { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
           { komponen: "DPP (Biaya Pendidikan)", nominal: 4687500 },
@@ -687,8 +700,8 @@ export const rawDataBiayaProdi = [
       },
       ...[2, 3, 4].map((k) => ({
         semester: k,
-        cicilan1: 7_750_000,
-        cicilan2: 7_750_000,
+        cicilan1: 6187500,
+        cicilan2: 6187500,
         rincianC1: [
           { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
           { komponen: "DPP (Biaya Pendidikan)", nominal: 4687500 },
@@ -733,8 +746,8 @@ export const rawDataBiayaProdi = [
       },
       ...[2, 3, 4].map((k) => ({
         semester: k,
-        cicilan1: 7_750_000,
-        cicilan2: 7_750_000,
+        cicilan1: 6187500,
+        cicilan2: 6187500,
         rincianC1: [
           { komponen: "DP (Pengembangan Institusi)", nominal: 1000000 },
           { komponen: "DPP (Biaya Pendidikan)", nominal: 4687500 },

@@ -32,17 +32,17 @@ function StatCard({ label, value, note, tone = "neutral" }) {
     neutral: "ring-neutral-200",
     green: "ring-emerald-200",
     amber: "ring-amber-200",
-    slate: "ring-slate-200",
+    slate: "ring-slate-300",
   };
   const toneBg = {
     neutral: "bg-white",
     green: "bg-emerald-100",
     amber: "bg-amber-100",
-    slate: "bg-slate-100",
+    slate: "bg-slate-200",
   };
   return (
     <div className={`rounded-3xl border border-neutral-200 p-5 shadow-sm ring-1 ${toneRing[tone]} ${toneBg[tone]}`}>
-      <div className="text-xs font-semibold text-neutral-600">{label}</div>
+      <div className="text-md font-semibold text-neutral-600">{label}</div>
       <div className="mt-2 text-2xl font-extrabold tracking-tight">{value}</div>
       {note ? <div className="mt-2 text-xs text-neutral-500">{note}</div> : null}
     </div>
@@ -91,6 +91,30 @@ function normalizeProdiData(raw) {
     .filter((p) => p.fakultas && p.prodi);
 }
 
+function calculateTotalPerSemester(semester, isFKIP) {
+  if (!semester) return 0;
+
+  return (
+    (semester.cicilan1 || 0) +
+    (semester.cicilan2 || 0) +
+    (isFKIP ? (semester.cicilan3 || 0) : 0)
+  );
+}
+
+function calculateTotalSampaiLulus({
+  semesters = [],
+  isFKIP,
+  maxSemester,
+}) {
+  if (!Array.isArray(semesters)) return 0;
+
+  return semesters
+    .filter((s) => s.semester >= 1 && s.semester <= maxSemester)
+    .reduce((total, s) => {
+      return total + calculateTotalPerSemester(s, isFKIP);
+    }, 0);
+}
+
 export default function HalamanDetailBiaya() {
   const rawDataContoh = rawDataBiayaProdi;
 
@@ -126,10 +150,29 @@ export default function HalamanDetailBiaya() {
 
   // const totalSemester = (s?.cicilan1 || 0) + (s?.cicilan2 || 0);
 
-  const totalSemester =
-    (s?.cicilan1 || 0) +
-    (s?.cicilan2 || 0) +
-    (isFKIP ? (s?.cicilan3 || 0) : 0);
+  // const totalSemester =
+  //   (s?.cicilan1 || 0) +
+  //   (s?.cicilan2 || 0) +
+  //   (isFKIP ? (s?.cicilan3 || 0) : 0);
+
+  const totalSemester = useMemo(() => {
+    return calculateTotalPerSemester(s, isFKIP);
+  }, [s, isFKIP]);
+
+  const semestersForTotal = useMemo(() => {
+    if (isKedokteran) {
+      return selected?.gelombang?.[gelombang]?.semesters || [];
+    }
+    return selected?.semesters || [];
+  }, [isKedokteran, selected, gelombang]);
+
+  const totalSampaiLulus = useMemo(() => {
+    return calculateTotalSampaiLulus({
+      semesters: semestersForTotal,
+      isFKIP,
+      maxSemester: isKedokteran ? 7 : 8,
+    });
+  }, [semestersForTotal, isFKIP, isKedokteran]);
 
   //tambahan
   const isSemester1 = (s?.semester || semester) === 1;
@@ -349,14 +392,14 @@ export default function HalamanDetailBiaya() {
               </div>
             ) : (
               <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
-                <div className="text-xs font-semibold text-neutral-600">Pilih Semester</div>
+                <div className="text-xs font-semibold text-neutral-600">Pilih Skema Pembayaran</div>
                 <select
                   value={semester}
                   onChange={(e) => setSemester(Number(e.target.value))}
                   className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
                   {semesterOptions.map((n) => (
-                    <option key={n} value={n}>Semester {n}</option>
+                    <option key={n} value={n}>Cicilan Semester {n}</option>
                   ))}
                 </select>
               </div>
@@ -591,9 +634,7 @@ export default function HalamanDetailBiaya() {
                           ) : (
                             "Tahap 1 - Semester 1"
                           )
-                        ) : (
-                          `Cicilan ${cicilanKe1}`
-                        )}
+                        ) : null}
                       </div>
 
                       {!isKedokSingleStage && (
@@ -700,7 +741,7 @@ export default function HalamanDetailBiaya() {
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <div className="text-xs font-semibold text-neutral-600">
-                          {isKedokteran ? "Tahap 2 - Semester 1" : `Cicilan ${cicilanKe2}`}
+                          {isKedokteran ? "Tahap 2 - Semester 1" : null}
                         </div>
                         {!isKedokteran && (
                           <div className="mt-1 text-base font-extrabold">Pembayaran cicilan {cicilanKe2}</div>
@@ -855,6 +896,28 @@ export default function HalamanDetailBiaya() {
               </div>
             </div>
           </section>
+
+          {/* {totalSampaiLulus && (
+            <section className="mt-6">
+              <StatCard
+                tone="slate"
+                label={
+                  isKedokteran ? (
+                    <span>
+                      Estimasi Total Biaya Kuliah sampai lulus (7 Semester),{" "}
+                      <span className="font-bold text-red-600">
+                        untuk kedokteran belum termasuk Infak Kelipatan*
+                      </span>
+                    </span>
+                  ) : (
+                    "Estimasi Total Biaya Kuliah sampai lulus (8 Semester)"
+                  )
+                }
+                value={formatIDR(totalSampaiLulus)}
+              note="*) Biaya dapat berubah sesuai kebijakan yang berlaku."
+              />
+            </section>
+          )} */}
 
         </div>
       </main>
