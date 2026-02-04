@@ -13,24 +13,10 @@ function formatIDR(n) {
   }
 }
 
-// function Badge({ children, tone = "neutral" }) {
-//   const tones = {
-//     neutral: "bg-neutral-100 text-neutral-700 border-neutral-200",
-//     green: "bg-emerald-100 text-emerald-800 border-emerald-200",
-//     amber: "bg-amber-100 text-amber-800 border-amber-200",
-//     slate: "bg-slate-100 text-slate-700 border-slate-200",
-//   };
-//   return (
-//     <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] ${tones[tone]}`}>
-//       {children}
-//     </span>
-//   );
-// }
-
 function Badge({ children, tone = "neutral" }) {
   const tones = {
     neutral: "bg-neutral-100 text-neutral-700 border-neutral-200",
-    green: "bg-[#f3efec] text-black border-neutral-200",
+    green: "bg-emerald-100 text-emerald-800 border-emerald-200",
     amber: "bg-amber-100 text-amber-800 border-amber-200",
     slate: "bg-slate-100 text-slate-700 border-slate-200",
   };
@@ -41,23 +27,23 @@ function Badge({ children, tone = "neutral" }) {
   );
 }
 
-function StatCard({ label, value, note, tone }) {
+function StatCard({ label, value, note, tone = "neutral" }) {
   const toneRing = {
     neutral: "ring-neutral-200",
     green: "ring-emerald-200",
-    amber: "ring-neutral-200",
+    amber: "ring-amber-200",
     slate: "ring-slate-300",
   };
   const toneBg = {
     neutral: "bg-white",
     green: "bg-emerald-100",
-    amber: "bg-[#f3efec]",
+    amber: "bg-amber-100",
     slate: "bg-slate-200",
   };
   return (
     <div className={`rounded-3xl border border-neutral-200 p-5 shadow-sm ring-1 ${toneRing[tone]} ${toneBg[tone]}`}>
-      <div className="text-md font-semibold">{label}</div>
-      <div className="mt-2 text-2xl font-extrabold tracking-tight">{value}</div>
+      <div className="text-md font-semibold text-emerald-900">{label}</div>
+      <div className="mt-2 text-2xl font-extrabold tracking-tight text-emerald-900">{value}</div>
       {note ? <div className="mt-2 text-xs text-neutral-500">{note}</div> : null}
     </div>
   );
@@ -167,20 +153,27 @@ export default function HalamanDetailBiaya() {
 
   const prodiData = useMemo(() => normalizeProdiData(rawDataContoh), [rawDataContoh]);
 
-  const [selectedKey, setSelectedKey] = useState(`${prodiData[0]?.fakultas}|${prodiData[0]?.prodi}`);
-  const [semester, setSemester] = useState(1);
+  // const [selectedKey, setSelectedKey] = useState(`${prodiData[0]?.fakultas}|${prodiData[0]?.prodi}`);
+  // const [semester, setSemester] = useState(1);
+  const [selectedKey, setSelectedKey] = useState(null);
+  const [semester, setSemester] = useState(null);
   const [gelombang, setGelombang] = useState(1);
-  const [showRincian, setShowRincian] = useState(true);
   const [openProdi, setOpenProdi] = useState(false);
   const [searchProdi, setSearchProdi] = useState("");
   const prodiRef = useRef(null);
-  const [openSkema, setOpenSkema] = useState(false);
-  const skemaRef = useRef(null);
+
+  // const selected = useMemo(() => {
+  //   const [fak, pr] = String(selectedKey || "").split("|");
+  //   return prodiData.find((p) => p.fakultas === fak && p.prodi === pr) || prodiData[0];
+  // }, [prodiData, selectedKey]);
 
   const selected = useMemo(() => {
-    const [fak, pr] = String(selectedKey || "").split("|");
-    return prodiData.find((p) => p.fakultas === fak && p.prodi === pr) || prodiData[0];
+    if (!selectedKey) return null;
+    const [fak, pr] = selectedKey.split("|");
+    return prodiData.find((p) => p.fakultas === fak && p.prodi === pr) || null;
   }, [prodiData, selectedKey]);
+
+  const isReady = Boolean(selected && semester !== null);
 
   const isLunas = semester === "lunas";
   const effectiveSemester = isLunas ? null : semester;
@@ -297,12 +290,8 @@ export default function HalamanDetailBiaya() {
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (
-        prodiRef.current && !prodiRef.current.contains(e.target) &&
-        skemaRef.current && !skemaRef.current.contains(e.target)
-      ) {
+      if (prodiRef.current && !prodiRef.current.contains(e.target)) {
         setOpenProdi(false);
-        setOpenSkema(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -333,6 +322,12 @@ export default function HalamanDetailBiaya() {
   const statCardValue = isLunas
     ? formatIDR(lunasTable?.grandTotal || totalSampaiLulus || 0)
     : formatIDR(totalSemester);
+
+  useEffect(() => {
+    if (selectedKey) {
+      setSemester(null);
+    }
+  }, [selectedKey]);
 
   return (
     // <div className="min-h-screen bg-neutral-50 text-neutral-900">
@@ -370,7 +365,7 @@ export default function HalamanDetailBiaya() {
                 <span className="truncate">
                   {selected
                     ? `${selected.fakultas} — ${selected.prodi}`
-                    : "Pilih Program Studi"}
+                    : "-- Pilih Program Studi --"}
                 </span>
                 <span className="text-neutral-400">▾</span>
               </button>
@@ -422,15 +417,15 @@ export default function HalamanDetailBiaya() {
                                 type="button"
                                 onClick={() => {
                                   setSelectedKey(key);
-                                  setSemester(1);
+                                  setSemester(null);
                                   setGelombang(1);
                                   setOpenProdi(false);
                                 }}
                                 className={
                                   "w-full text-left px-8 py-2 text-sm transition-colors " +
                                   (active
-                                    ? "bg-[#6B5B51] text-white font-semibold"
-                                    : "text-neutral-800 hover:bg-[#6B5B51] hover:text-white")
+                                    ? "bg-blue-700 text-white font-semibold"
+                                    : "text-neutral-800 hover:bg-blue-700 hover:text-white")
                                 }
                               >
                                 S1 — {p.prodi}
@@ -464,91 +459,20 @@ export default function HalamanDetailBiaya() {
                 </select>
               </div>
             ) : (
-              // <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
-              //   <div className="text-xs font-semibold text-neutral-600">Pilih Skema Pembayaran</div>
-              //   <select
-              //     value={semester}
-              //     onChange={(e) => setSemester(e.target.value === "lunas" ? "lunas" : Number(e.target.value))}
-              //     className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
-              //   >
-              //     {semesterOptions.map((n) => (
-              //       <option key={n} value={n}>Semester {n} (cicilan)</option>
-              //     ))}
-              //     <option value="lunas">Lunas (8 Semester)</option>
-              //   </select>
-              // </div>
-              <div
-                ref={skemaRef}
-                className="relative rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm"
-              >
-                <div className="text-xs font-semibold text-neutral-600">
-                  Pilih Skema Pembayaran
-                </div>
-
-                {/* Trigger */}
-                <button
-                  type="button"
-                  onClick={() => setOpenSkema(v => !v)}
-                  className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm text-left flex items-center justify-between"
+              <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
+                <div className="text-xs font-semibold text-neutral-600">Pilih Skema Pembayaran</div>
+                <select
+                  value={semester ?? ""}
+                  onChange={(e) => setSemester(e.target.value === "lunas" ? "lunas" : Number(e.target.value))}
+                  className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
-                  <span className="truncate">
-                    {semester === "lunas"
-                      ? "Lunas (Semester 1 s.d 8)"
-                      : `Cicilan — Semester ${semester}`}
-                  </span>
-                  <span className="text-neutral-400">▾</span>
-                </button>
+                  <option value="" disabled>-- Pilih Skema Pembayaran --</option>
 
-                {/* Dropdown */}
-                {openSkema && (
-                  <div className="absolute z-50 mt-2 w-full rounded-2xl border border-neutral-200 bg-white shadow-lg overflow-hidden">
-
-                    {/* ===== CICILAN ===== */}
-                    <div className="px-4 py-2 text-sm font-semibold text-neutral-700 bg-neutral-50">
-                      Cicilan
-                    </div>
-
-                    {semesterOptions.map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        onClick={() => {
-                          setSemester(n);
-                          setOpenSkema(false);
-                        }}
-                        className={
-                          "w-full text-left px-8 py-2 text-sm transition-colors " +
-                          (semester === n
-                            ? "bg-[#6B5B51] text-white font-semibold"
-                            : "text-neutral-800 hover:bg-[#6B5B51] hover:text-white")
-                        }
-                      >
-                        Semester {n}
-                      </button>
-                    ))}
-
-                    {/* ===== LUNAS ===== */}
-                    <div className="px-4 py-2 mt-1 text-sm font-semibold text-neutral-700 bg-neutral-50">
-                      Lunas
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSemester("lunas");
-                        setOpenSkema(false);
-                      }}
-                      className={
-                        "w-full text-left px-8 py-2 text-sm transition-colors " +
-                        (semester === "lunas"
-                          ? "bg-[#6B5B51] text-white font-semibold"
-                          : "text-neutral-800 hover:bg-[#6B5B51] hover:text-white")
-                      }
-                    >
-                      Semester 1 s.d 8
-                    </button>
-                  </div>
-                )}
+                  {semesterOptions.map((n) => (
+                    <option key={n} value={n}>Semester {n} (cicilan)</option>
+                  ))}
+                  <option value="lunas">Lunas (8 Semester)</option>
+                </select>
               </div>
             )}
 
@@ -567,16 +491,28 @@ export default function HalamanDetailBiaya() {
                 </select>
               </div>
             ) : (
-              <StatCard
-                tone="amber"
-                label={statCardLabel}
-                value={statCardValue}
-              />
+              isReady && (
+                <StatCard
+                  tone="green"
+                  label={statCardLabel}
+                  value={statCardValue}
+                />
+              )
             )}
-
           </div>
 
-          {!isKedokteran ? (
+          {!isReady && (
+            <section className="mt-8 rounded-3xl border border-dashed border-neutral-300 bg-white p-8 text-center">
+              <div className="text-sm font-semibold text-neutral-700">
+                Silakan pilih Program Studi dan Skema Pembayaran terlebih dahulu
+              </div>
+              <div className="mt-2 text-xs text-neutral-500 max-w-md mx-auto">
+                Informasi rincian biaya akan ditampilkan setelah pilihan Anda lengkap.
+              </div>
+            </section>
+          )}
+
+          {isReady && !isKedokteran && (
             <section className="mt-6 rounded-3xl px-2">
               <div className="font-extrabold mb-4">
                 {isLunas
@@ -584,118 +520,119 @@ export default function HalamanDetailBiaya() {
                   : `Berikut rincian pembayaran cicilan untuk semester ${semester}:`}
               </div>
             </section>
-          ) :
-            (
-              <section className="mt-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm">
-                <div className="font-extrabold mb-4">Biaya Fakultas Kedokteran</div>
-                <div className="w-full overflow-x-auto">
-                  <table className="min-w-[600px] w-full border border-neutral-300 border-collapse">
-                    <thead>
-                      <tr className="bg-neutral-100">
-                        <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
-                          Rincian Dana
-                        </th>
-                        <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
-                          Jenis Pembayaran
-                        </th>
-                        <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
-                          Jumlah
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
-                          DP (Dana Pembangunan)
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">Awal</td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">Rp 200.000.000</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
-                          DPP (Dana Penyelenggara Pendidikan) Sarjana
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">
-                          Per Semester
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
-                          Rp 27.600.000
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
-                          DPP (Dana Penyelenggara Pendidikan) Profesi*
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">
-                          Per Semester
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
-                          Rp 40.000.000
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+          )}
 
-                <div className="font-extrabold mb-4 mt-6">IFK=INFAK*</div>
-                <div className="w-full overflow-x-auto">
-                  <table className="min-w-[700px] w-full border border-neutral-300 border-collapse text-sm">
-                    <thead>
-                      <tr className="bg-neutral-100">
-                        <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
-                          IFK
-                        </th>
-                        <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
-                          Gelombang I
-                        </th>
-                        <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
-                          Gelombang II
-                        </th>
-                        <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
-                          Gelombang III
-                        </th>
-                        <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
-                          Gelombang IV
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 font-semibold whitespace-nowrap">
-                          Wajib
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
-                          Rp 100.000.000
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
-                          Rp 125.000.000
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
-                          Rp 150.000.000
-                        </td>
-                        <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
-                          Rp 175.000.000
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 border border-neutral-300 font-semibold whitespace-nowrap">
-                          Kelipatan
-                        </td>
-                        <td
-                          className="p-3 border border-neutral-300 text-center whitespace-nowrap font-semibold"
-                          colSpan={4}
-                        >
-                          Rp 25.000.000
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="font-extrabold mb-4 mt-8 text-sm">POTONGAN DPP 12,5% UNTUK 10 ORANG PERTAMA YANG MEMBAYAR LUNAS (KHUSUS GELOMBANG EARLY BIRD)</div>
-                <div className="font-bold mb-4 text-xs">*) Biaya Pendidikan dapat berubah sewaktu-waktu sesuai kebijakan yang berlaku</div>
+          {isReady && isKedokteran && (
+            <section className="mt-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm">
+              <div className="font-extrabold mb-4">Biaya Fakultas Kedokteran</div>
+              <div className="w-full overflow-x-auto">
+                <table className="min-w-[600px] w-full border border-neutral-300 border-collapse">
+                  <thead>
+                    <tr className="bg-neutral-100">
+                      <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
+                        Rincian Dana
+                      </th>
+                      <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
+                        Jenis Pembayaran
+                      </th>
+                      <th className="p-3 text-center border border-neutral-300 whitespace-nowrap">
+                        Jumlah
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
+                        DP (Dana Pembangunan)
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">Awal</td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">Rp 200.000.000</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
+                        DPP (Dana Penyelenggara Pendidikan) Sarjana
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">
+                        Per Semester
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
+                        Rp 27.600.000
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold">
+                        DPP (Dana Penyelenggara Pendidikan) Profesi*
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-center">
+                        Per Semester
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap font-semibold text-right">
+                        Rp 40.000.000
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-              </section>
-            )}
+              <div className="font-extrabold mb-4 mt-6">IFK=INFAK*</div>
+              <div className="w-full overflow-x-auto">
+                <table className="min-w-[700px] w-full border border-neutral-300 border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-neutral-100">
+                      <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
+                        IFK
+                      </th>
+                      <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
+                        Gelombang I
+                      </th>
+                      <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
+                        Gelombang II
+                      </th>
+                      <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
+                        Gelombang III
+                      </th>
+                      <th className="p-3 border border-neutral-300 text-center whitespace-nowrap">
+                        Gelombang IV
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="p-3 border border-neutral-300 font-semibold whitespace-nowrap">
+                        Wajib
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
+                        Rp 100.000.000
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
+                        Rp 125.000.000
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
+                        Rp 150.000.000
+                      </td>
+                      <td className="p-3 border border-neutral-300 whitespace-nowrap text-right font-semibold">
+                        Rp 175.000.000
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 border border-neutral-300 font-semibold whitespace-nowrap">
+                        Kelipatan
+                      </td>
+                      <td
+                        className="p-3 border border-neutral-300 text-center whitespace-nowrap font-semibold"
+                        colSpan={4}
+                      >
+                        Rp 25.000.000
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="font-extrabold mb-4 mt-8">POTONGAN DPP 12,5% UNTUK 10 ORANG PERTAMA YANG MEMBAYAR LUNAS (KHUSUS GELOMBANG EARLY BIRD)</div>
+              <div className="font-extrabold mb-4">*) Biaya dapat berubah sewaktu-waktu sesuai kebijakan yang berlaku</div>
+
+            </section>
+          )}
 
           {breakdownMismatch ? (
             <div className="mt-4 rounded-3xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
@@ -706,7 +643,7 @@ export default function HalamanDetailBiaya() {
             </div>
           ) : null}
 
-          {(!isLunas || isKedokteran) && (
+          {isReady && (!isLunas || isKedokteran) && (
             <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm">
               <div className="p-5 sm:p-6 border-b border-neutral-200">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -740,7 +677,7 @@ export default function HalamanDetailBiaya() {
                             ) : isKedokSemester2 ? (
                               <>
                                 Tahap 3 Semester 1 +{" "}
-                                <span className="font-bold text-neutral-600">Semester 2</span>
+                                <span className="font-bold text-emerald-600">Semester 2</span>
                               </>
                             ) : (
                               "Tahap 1 - Semester 1"
@@ -758,7 +695,7 @@ export default function HalamanDetailBiaya() {
                       {/* <Badge tone="green">{formatIDR(s?.cicilan1 || 0)}</Badge> */}
 
                       {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                        <Badge tone="green">
+                        <Badge tone="amber">
                           <span className="text-sm font-bold">
                             (Total rincian belum mencakup infak kelipatan)
                           </span>
@@ -787,7 +724,7 @@ export default function HalamanDetailBiaya() {
                             <tr key={x.komponen} className="border-t border-neutral-200">
                               <td className="px-4 py-3 text-sm text-neutral-800">
                                 {x.komponen === "Infak Kelipatan (50%)" ? (
-                                  <Badge tone="green">
+                                  <Badge tone="amber">
                                     <span className="text-sm font-bold">
                                       {x.komponen}
                                     </span>
@@ -796,7 +733,7 @@ export default function HalamanDetailBiaya() {
                                   <span
                                     className={
                                       x.komponen === "DPP Semester 2 (100%)"
-                                        ? "text-neutral-800"
+                                        ? "text-emerald-600 font-bold"
                                         : "text-neutral-800"
                                     }
                                   >
@@ -807,7 +744,7 @@ export default function HalamanDetailBiaya() {
                               <td className="px-4 py-3 text-sm text-right font-semibold">
                                 {x.komponen === "Infak Kelipatan (50%)" ? (
                                   <div className="flex justify-end">
-                                    <Badge tone="green">
+                                    <Badge tone="amber">
                                       <span className="text-sm font-bold">
                                         (Kelipatan Rp 25.000.000)
                                       </span>
@@ -817,7 +754,7 @@ export default function HalamanDetailBiaya() {
                                   <span
                                     className={
                                       x.komponen === "DPP Semester 2 (100%)"
-                                        ? "text-neutral-600"
+                                        ? "text-emerald-600"
                                         : ""
                                     }
                                   >
@@ -858,7 +795,7 @@ export default function HalamanDetailBiaya() {
                         {/* <Badge tone="green">{formatIDR(s?.cicilan2 || 0)}</Badge> */}
 
                         {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
-                          <Badge tone="green">
+                          <Badge tone="amber">
                             <span className="text-sm font-bold">
                               (Total rincian belum mencakup infak kelipatan)
                             </span>
@@ -888,7 +825,7 @@ export default function HalamanDetailBiaya() {
                                 {/* <td className="px-4 py-3 text-sm text-neutral-800">{x.komponen}</td> */}
                                 <td className="px-4 py-3 text-sm">
                                   {x.komponen === "Infak Kelipatan (50%)" ? (
-                                    <Badge tone="green">
+                                    <Badge tone="amber">
                                       <span className="text-sm font-bold">
                                         {x.komponen}
                                       </span>
@@ -908,7 +845,7 @@ export default function HalamanDetailBiaya() {
                                 <td className="px-4 py-3 text-sm text-right font-semibold">
                                   {x.komponen === "Infak Kelipatan (50%)" ? (
                                     <div className="flex justify-end">
-                                      <Badge tone="green">
+                                      <Badge tone="amber">
                                         <span className="text-sm font-bold">
                                           Kelipatan Rp 25.000.000
                                         </span>
@@ -998,7 +935,7 @@ export default function HalamanDetailBiaya() {
             </section>
           )}
 
-          {isLunas && !isKedokteran && lunasTable && (
+          {isReady && isLunas && !isKedokteran && lunasTable && (
             <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm p-6">
               <h2 className="font-extrabold mb-4 text-md">
                 {selected?.fakultas} — {selected?.prodi}
@@ -1007,40 +944,57 @@ export default function HalamanDetailBiaya() {
               <div className="overflow-x-auto">
                 <table className="min-w-[900px] w-full border border-neutral-300 border-collapse text-sm">
                   <thead>
+                    {/* ===== HEADER BARIS 1 ===== */}
                     <tr className="bg-neutral-100">
-                      <th className="p-3 border border-neutral-300 text-center font-semibold">
+                      <th
+                        rowSpan={2}
+                        className="p-3 border border-neutral-300 text-center font-semibold"
+                      >
                         Biaya
                       </th>
 
                       {Array.from({ length: 8 }).map((_, sIdx) => (
                         <th
                           key={sIdx}
+                          colSpan={cicilanCount}
                           className="p-3 border border-neutral-300 text-center font-semibold"
                         >
                           Semester {sIdx + 1}
                         </th>
                       ))}
 
-                      <th className="p-3 border border-neutral-300 text-center font-semibold">
+                      <th
+                        rowSpan={2}
+                        className="p-3 border border-neutral-300 text-center font-semibold"
+                      >
                         Jumlah
                       </th>
+                    </tr>
+
+                    {/* ===== HEADER BARIS 2 ===== */}
+                    <tr className="bg-neutral-100">
+                      {Array.from({ length: 8 }).map((_, sIdx) => (
+                        <React.Fragment key={sIdx}>
+                          <th className="p-2 border border-neutral-300 text-center">
+                            Cicilan 1
+                          </th>
+                          <th className="p-2 border border-neutral-300 text-center">
+                            Cicilan 2
+                          </th>
+                          {cicilanCount === 3 && (
+                            <th className="p-2 border border-neutral-300 text-center">
+                              Cicilan 3
+                            </th>
+                          )}
+                        </React.Fragment>
+                      ))}
                     </tr>
                   </thead>
 
                   <tbody>
                     {/* ===== ISI PER KOMPONEN ===== */}
                     {Object.entries(lunasTable.rowsMap).map(([komponen, values]) => {
-                      // total per semester (akumulasi cicilan)
-                      const semesterTotals = Array.from({ length: 8 }).map((_, semIdx) => {
-                        const start = semIdx * cicilanCount;
-                        const end = start + cicilanCount;
-
-                        return values
-                          .slice(start, end)
-                          .reduce((sum, v) => sum + (v || 0), 0);
-                      });
-
-                      const rowTotal = semesterTotals.reduce((a, b) => a + b, 0);
+                      const rowTotal = values.reduce((a, b) => a + b, 0);
 
                       return (
                         <tr key={komponen}>
@@ -1048,7 +1002,7 @@ export default function HalamanDetailBiaya() {
                             {komponen}
                           </td>
 
-                          {semesterTotals.map((v, i) => (
+                          {values.map((v, i) => (
                             <td
                               key={i}
                               className="p-3 border border-neutral-300 text-right"
@@ -1064,29 +1018,21 @@ export default function HalamanDetailBiaya() {
                       );
                     })}
 
-                    {/* ===== BARIS JUMLAH PER SEMESTER ===== */}
+                    {/* ===== BARIS JUMLAH PER CICILAN ===== */}
                     <tr className="bg-neutral-50">
                       <td className="p-3 border border-neutral-300 font-extrabold">
                         Jumlah
                       </td>
 
-                      {Array.from({ length: 8 }).map((_, semIdx) => {
+                      {Array.from({ length: 8 * cicilanCount }).map((_, colIdx) => {
                         const colTotal = Object.values(lunasTable.rowsMap).reduce(
-                          (sum, row) => {
-                            const start = semIdx * cicilanCount;
-                            const end = start + cicilanCount;
-
-                            return (
-                              sum +
-                              row.slice(start, end).reduce((a, b) => a + (b || 0), 0)
-                            );
-                          },
+                          (sum, row) => sum + (row[colIdx] || 0),
                           0
                         );
 
                         return (
                           <td
-                            key={semIdx}
+                            key={colIdx}
                             className="p-3 border border-neutral-300 text-right font-semibold"
                           >
                             {colTotal ? formatIDR(colTotal) : "-"}
@@ -1094,7 +1040,7 @@ export default function HalamanDetailBiaya() {
                         );
                       })}
 
-                      <td className="p-3 border border-neutral-300 text-right font-extrabold text-black bg-[#f3efec]">
+                      <td className="p-3 border border-neutral-300 text-right font-extrabold text-emerald-900 bg-emerald-100">
                         {formatIDR(lunasTable.grandTotal)}
                       </td>
                     </tr>
