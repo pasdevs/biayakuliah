@@ -13,20 +13,6 @@ function formatIDR(n) {
   }
 }
 
-// function Badge({ children, tone = "neutral" }) {
-//   const tones = {
-//     neutral: "bg-neutral-100 text-neutral-700 border-neutral-200",
-//     green: "bg-emerald-100 text-emerald-800 border-emerald-200",
-//     amber: "bg-amber-100 text-amber-800 border-amber-200",
-//     slate: "bg-slate-100 text-slate-700 border-slate-200",
-//   };
-//   return (
-//     <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] ${tones[tone]}`}>
-//       {children}
-//     </span>
-//   );
-// }
-
 function Badge({ children, tone = "neutral" }) {
   const tones = {
     neutral: "bg-neutral-100 text-neutral-700 border-neutral-200",
@@ -162,6 +148,64 @@ function buildLunasTable(semesters, cicilanCount) {
   return { rowsMap, grandTotal };
 }
 
+function normalizeKomponenKedokteran(label) {
+  if (!label) return label;
+
+  // 1️⃣ DPP HARUS DIATAS DP
+  if (label.startsWith("DPP")) return "DPP";
+
+  // 2️⃣ DP tapi BUKAN DPP
+  if (label.startsWith("DP ")) return "DP";
+
+  // 3️⃣ Infak
+  if (label.startsWith("Infak Wajib")) return "Infak Wajib";
+  if (label.startsWith("Infak Kelipatan")) return "Infak Kelipatan";
+
+  // 4️⃣ Lainnya
+  if (label === "PKKMB") return "PKKMB";
+
+  return label;
+}
+
+function buildLunasTableKedokteran(semesters = []) {
+  const rowsMap = {};
+  let grandTotal = 0;
+  let hasInfakKelipatan = false;
+
+  semesters.slice(0, 7).forEach((s, semIdx) => {
+    const rincianList = [
+      ...(s.rincianC1 || []),
+      ...(s.rincianC2 || []),
+      ...(s.rincianC3 || []),
+    ];
+
+    rincianList.forEach((r) => {
+      // 🔹 DETEKSI infak kelipatan (tidak dihitung)
+      if (r.komponen?.startsWith("Infak Kelipatan")) {
+        hasInfakKelipatan = true;
+        return;
+      }
+
+      if (!r.nominal) return;
+
+      const normalized = normalizeKomponenKedokteran(r.komponen);
+
+      if (!rowsMap[normalized]) {
+        rowsMap[normalized] = Array(7).fill(0);
+      }
+
+      rowsMap[normalized][semIdx] += r.nominal;
+      grandTotal += r.nominal;
+    });
+  });
+
+  return {
+    rowsMap,
+    grandTotal,
+    hasInfakKelipatan,
+  };
+}
+
 export default function HalamanDetailBiaya() {
   const rawDataContoh = rawDataBiayaProdi;
 
@@ -170,7 +214,6 @@ export default function HalamanDetailBiaya() {
   const [selectedKey, setSelectedKey] = useState(`${prodiData[0]?.fakultas}|${prodiData[0]?.prodi}`);
   const [semester, setSemester] = useState(1);
   const [gelombang, setGelombang] = useState(1);
-  const [showRincian, setShowRincian] = useState(true);
   const [openProdi, setOpenProdi] = useState(false);
   const [searchProdi, setSearchProdi] = useState("");
   const prodiRef = useRef(null);
@@ -183,7 +226,6 @@ export default function HalamanDetailBiaya() {
   }, [prodiData, selectedKey]);
 
   const isLunas = semester === "lunas";
-  const effectiveSemester = isLunas ? null : semester;
 
   const isFKIP = selected?.fakultas === "Fakultas Keguruan dan Ilmu Pendidikan";
 
@@ -297,17 +339,25 @@ export default function HalamanDetailBiaya() {
 
   useEffect(() => {
     function handleClickOutside(e) {
-      if (
-        prodiRef.current && !prodiRef.current.contains(e.target) &&
-        skemaRef.current && !skemaRef.current.contains(e.target)
-      ) {
-        setOpenProdi(false);
-        setOpenSkema(false);
+      // PRODI
+      if (openProdi) {
+        if (!prodiRef.current || !prodiRef.current.contains(e.target)) {
+          setOpenProdi(false);
+        }
+      }
+
+      // SKEMA / GELOMBANG
+      if (openSkema) {
+        if (!skemaRef.current || !skemaRef.current.contains(e.target)) {
+          setOpenSkema(false);
+        }
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, [openProdi, openSkema]);
 
   const hasInfakKelipatanC1 = (s?.rincianC1 || []).some(
     (x) => x.komponen === "Infak Kelipatan (50%)"
@@ -317,14 +367,30 @@ export default function HalamanDetailBiaya() {
     (x) => x.komponen === "Infak Kelipatan (50%)"
   );
 
+  //lunas table
+  // const lunasTable = useMemo(() => {
+  //   if (!isLunas || isKedokteran) return null;
+
+  //   return buildLunasTable(
+  //     selected?.semesters || [],
+  //     cicilanCount
+  //   );
+  // }, [isLunas, isKedokteran, selected, cicilanCount]);
+
   const lunasTable = useMemo(() => {
-    if (!isLunas || isKedokteran) return null;
+    if (!isLunas) return null;
+
+    if (isKedokteran) {
+      return buildLunasTableKedokteran(
+        selected?.gelombang?.[gelombang]?.semesters || []
+      );
+    }
 
     return buildLunasTable(
       selected?.semesters || [],
       cicilanCount
     );
-  }, [isLunas, isKedokteran, selected, cicilanCount]);
+  }, [isLunas, isKedokteran, selected, gelombang, cicilanCount]);
 
   const statCardLabel = isLunas
     ? "Total Biaya Lunas 8 Semester"
@@ -333,6 +399,21 @@ export default function HalamanDetailBiaya() {
   const statCardValue = isLunas
     ? formatIDR(lunasTable?.grandTotal || totalSampaiLulus || 0)
     : formatIDR(totalSemester);
+
+  function getInfakWajibKedok(gelombang) {
+    const map = {
+      1: 100_000_000,
+      2: 125_000_000,
+      3: 150_000_000,
+      4: 175_000_000,
+    };
+    return map[gelombang] || 0;
+  }
+
+  // tampilkan card rincian jika:
+  // - NON kedok & belum lunas
+  // - KEDOKTERAN & BELUM LUNAS
+  const showRincianCard = !isLunas;
 
   return (
     // <div className="min-h-screen bg-neutral-50 text-neutral-900">
@@ -555,15 +636,19 @@ export default function HalamanDetailBiaya() {
             {/* KOLOM 3: JIKA KEDOKTERAN = SEMESTER, JIKA BUKAN = TOGGLE */}
             {isKedokteran ? (
               <div className="rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm">
-                <div className="text-xs font-semibold text-neutral-600">Pilih Semester</div>
+                <div className="text-xs font-semibold text-neutral-600">Pilih Skema Pembayaran</div>
                 <select
                   value={semester}
-                  onChange={(e) => setSemester(Number(e.target.value))}
+                  onChange={(e) =>
+                    setSemester(e.target.value === "lunas" ? "lunas" : Number(e.target.value))
+                  }
                   className="mt-2 w-full rounded-2xl border border-neutral-200 bg-white px-4 py-2.5 text-sm"
                 >
                   {semesterOptions.map((n) => (
                     <option key={n} value={n}>Semester {n}</option>
                   ))}
+
+                  <option value="lunas">Semester 1 s.d 7</option>
                 </select>
               </div>
             ) : (
@@ -692,7 +777,7 @@ export default function HalamanDetailBiaya() {
                   </table>
                 </div>
                 <div className="font-extrabold mb-4 mt-8 text-sm">POTONGAN DPP 12,5% UNTUK 10 ORANG PERTAMA YANG MEMBAYAR LUNAS (KHUSUS GELOMBANG EARLY BIRD)</div>
-                <div className="font-bold mb-4 text-xs">*) Biaya Pendidikan dapat berubah sewaktu-waktu sesuai kebijakan yang berlaku</div>
+                <div className="font-semibold mb-4 text-xs text-neutral-600">*) Biaya Pendidikan dapat berubah sewaktu-waktu sesuai kebijakan yang berlaku</div>
 
               </section>
             )}
@@ -706,7 +791,19 @@ export default function HalamanDetailBiaya() {
             </div>
           ) : null}
 
-          {(!isLunas || isKedokteran) && (
+
+
+          {isKedokteran ? (
+            <section className="mt-6 rounded-3xl px-2">
+              <div className="font-extrabold mb-4">
+                {isLunas
+                  ? "Berikut rincian pembayaran semester 1 s.d semester 7:"
+                  : `Berikut rincian pembayaran semester ${semester}:`}
+              </div>
+            </section>
+          ) : null}
+
+          {showRincianCard && (
             <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm">
               <div className="p-5 sm:p-6 border-b border-neutral-200">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -739,8 +836,8 @@ export default function HalamanDetailBiaya() {
                               "Biaya Semester"
                             ) : isKedokSemester2 ? (
                               <>
-                                Tahap 3 Semester 1 +{" "}
-                                <span className="font-bold text-neutral-600">Semester 2</span>
+                                Tahap 3 - {" "}
+                                <span className="font-semibold text-neutral-600">Semester 2</span>
                               </>
                             ) : (
                               "Tahap 1 - Semester 1"
@@ -760,7 +857,7 @@ export default function HalamanDetailBiaya() {
                       {s.rincianC1?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
                         <Badge tone="green">
                           <span className="text-sm font-bold">
-                            (Total rincian belum mencakup infak kelipatan)
+                            (Total rincian belum termasuk infak kelipatan)
                           </span>
                         </Badge>
                       ) : (
@@ -860,7 +957,7 @@ export default function HalamanDetailBiaya() {
                         {s.rincianC2?.some((x) => x.komponen === "Infak Kelipatan (50%)") ? (
                           <Badge tone="green">
                             <span className="text-sm font-bold">
-                              (Total rincian belum mencakup infak kelipatan)
+                              (Total rincian belum termasuk infak kelipatan)
                             </span>
                           </Badge>
                         ) : (
@@ -1101,6 +1198,123 @@ export default function HalamanDetailBiaya() {
                   </tbody>
                 </table>
               </div>
+            </section>
+          )}
+
+          {isLunas && isKedokteran && lunasTable && (
+            <section className="mt-6 rounded-3xl border border-neutral-200 bg-white shadow-sm p-6">
+              <h2 className="font-extrabold mb-4 text-md">
+                {selected?.fakultas} — {selected?.prodi}
+              </h2>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-[900px] w-full border border-neutral-300 border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-neutral-100">
+                      <th className="p-3 border border-neutral-300">Biaya</th>
+
+                      {Array.from({
+                        length: isKedokteran ? 7 : 8,
+                      }).map((_, i) => (
+                        <th key={i} className="p-3 border border-neutral-300 text-center">
+                          Semester {i + 1}
+                        </th>
+                      ))}
+
+                      <th className="p-3 border border-neutral-300 text-center">
+                        Jumlah
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {Object.entries(lunasTable.rowsMap).map(([komponen, values]) => {
+                      const rowTotal = values.reduce((a, b) => a + b, 0);
+
+                      return (
+                        <tr key={komponen}>
+                          <td className="p-3 border border-neutral-300 font-semibold">
+                            {komponen}
+                          </td>
+
+                          {values.map((v, i) => (
+                            <td
+                              key={i}
+                              className="p-3 border border-neutral-300 text-right"
+                            >
+                              {v ? formatIDR(v) : "-"}
+                            </td>
+                          ))}
+
+                          <td className="p-3 border border-neutral-300 text-right font-extrabold">
+                            {formatIDR(rowTotal)}
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    {lunasTable.hasInfakKelipatan && (
+                      <tr>
+                        <td className="p-3 border border-neutral-300 font-semibold">
+                          Infak Kelipatan
+                        </td>
+
+                        {/* Semester 1–2 */}
+                        <td
+                          colSpan={1}
+                          className="p-3 border border-neutral-300 text-center"
+                        >
+                          Kelipatan <br /> Rp 25.000.000
+                        </td>
+
+                        {/* Semester 2–7 */}
+                        {Array.from({ length: 6 }).map((_, i) => (
+                          <td
+                            key={i}
+                            className="p-3 border border-neutral-300 text-right"
+                          >
+                            -
+                          </td>
+                        ))}
+
+                        <td className="p-3 border border-neutral-300 text-right">
+                          -
+                        </td>
+                      </tr>
+                    )}
+
+                    {/* TOTAL */}
+                    <tr className="bg-neutral-50">
+                      <td className="p-3 border border-neutral-300 font-extrabold">
+                        Jumlah
+                      </td>
+
+                      {Array.from({
+                        length: isKedokteran ? 7 : 8,
+                      }).map((_, i) => {
+                        const colTotal = Object.values(lunasTable.rowsMap).reduce(
+                          (sum, row) => sum + (row[i] || 0),
+                          0
+                        );
+
+                        return (
+                          <td
+                            key={i}
+                            className="p-3 border border-neutral-300 text-right font-semibold"
+                          >
+                            {colTotal ? formatIDR(colTotal) : "-"}
+                          </td>
+                        );
+                      })}
+
+                      <td className="p-3 border border-neutral-300 text-right font-extrabold bg-[#f3efec]">
+                        {formatIDR(lunasTable.grandTotal)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="font-semibold mb-4 mt-4 text-xs text-neutral-600">*) Total Biaya belum termasuk Infak Kelipatan</div>
             </section>
           )}
 
