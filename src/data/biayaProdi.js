@@ -1233,41 +1233,45 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 6900000,
-        cicilan2: 5550000,
+        cicilan1: 8525000,
+        cicilan2: 7175000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 4000000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 4000000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
       },
       {
         semester: 2,
-        cicilan1: 5550000,
-        cicilan2: 5550000,
+        cicilan1: 7175000,
+        cicilan2: 7175000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 4000000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 4000000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
       },
       ...[3, 4].map((k) => ({
         semester: k,
-        cicilan1: 5625000,
-        cicilan2: 5625000,
+        cicilan1: 4000000,
+        cicilan2: 4000000,
         rincianC1: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 4000000 },
         ],
         rincianC2: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 4000000 },
         ],
       })),
@@ -1288,41 +1292,45 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 6775000,
-        cicilan2: 5425000,
+        cicilan1: 8400000,
+        cicilan2: 7050000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3875000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3875000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
       },
       {
         semester: 2,
-        cicilan1: 5425000,
-        cicilan2: 5425000,
+        cicilan1: 7050000,
+        cicilan2: 7050000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3875000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3875000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
       },
       ...[3, 4].map((k) => ({
         semester: k,
-        cicilan1: 5500000,
-        cicilan2: 5500000,
+        cicilan1: 3875000,
+        cicilan2: 3875000,
         rincianC1: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3875000 },
         ],
         rincianC2: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3875000 },
         ],
       })),
@@ -1343,41 +1351,45 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 6350000,
-        cicilan2: 5000000,
+        cicilan1: 7975000,
+        cicilan2: 6625000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3450000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3450000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
       },
       {
         semester: 2,
-        cicilan1: 5000000,
-        cicilan2: 5000000,
+        cicilan1: 6625000,
+        cicilan2: 6625000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3450000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3450000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1550000 },
         ],
       },
       ...[3, 4].map((k) => ({
         semester: k,
-        cicilan1: 5075000,
-        cicilan2: 5075000,
+        cicilan1: 3450000,
+        cicilan2: 3450000,
         rincianC1: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3450000 },
         ],
         rincianC2: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3450000 },
         ],
       })),
@@ -1398,41 +1410,45 @@ export const rawDataBiayaProdi = [
     semesters: [
       {
         semester: 1,
-        cicilan1: 6350000,
-        cicilan2: 5000000,
+        cicilan1: 7975000,
+        cicilan2: 6625000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3500000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1500000 },
           { komponen: "PKKMB", nominal: 1_350_000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3500000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1500000 },
         ],
       },
       {
         semester: 2,
-        cicilan1: 5000000,
-        cicilan2: 5000000,
+        cicilan1: 6625000,
+        cicilan2: 6625000,
         rincianC1: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3500000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1500000 },
         ],
         rincianC2: [
+          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3500000 },
           { komponen: "DPPS (Praktikum/Fasilitas)", nominal: 1500000 },
         ],
       },
       ...[3, 4].map((k) => ({
         semester: k,
-        cicilan1: 5125000,
-        cicilan2: 5125000,
+        cicilan1: 3500000,
+        cicilan2: 3500000,
         rincianC1: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3500000 },
         ],
         rincianC2: [
-          { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
+          // { komponen: "DP (Dana Pembangunan)", nominal: 1625000 },
           { komponen: "DPP (Dana Penyelengaraan Pendidikan)", nominal: 3500000 },
         ],
       })),
